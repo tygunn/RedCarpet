@@ -22,6 +22,7 @@ import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 import de.erichseifert.vectorgraphics2d.eps.EPSProcessor;
 import de.erichseifert.vectorgraphics2d.intermediate.CommandSequence;
 import de.erichseifert.vectorgraphics2d.pdf.PDFProcessor;
+import de.erichseifert.vectorgraphics2d.svg.SVGProcessor;
 import de.erichseifert.vectorgraphics2d.util.PageSize;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -110,6 +111,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         jExportAsEps = new javax.swing.JMenuItem();
         jExportAsPdf = new javax.swing.JMenuItem();
+        jExportAsSvg = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
@@ -300,6 +302,14 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
         fileMenu.add(jExportAsPdf);
 
+        jExportAsSvg.setText("Export as SVG");
+        jExportAsSvg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jExportAsSvgActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jExportAsSvg);
+
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -371,64 +381,131 @@ public class StarConfiguration extends javax.swing.JFrame {
         exportAsPdf();
     }//GEN-LAST:event_jExportAsPdfActionPerformed
 
+    private void jExportAsSvgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportAsSvgActionPerformed
+        exportAsSvg();
+    }//GEN-LAST:event_jExportAsSvgActionPerformed
+
+    /**
+     * Output the star to an SVG file.
+     */
+    private void exportAsSvg() {
+        if (isCalculating) {
+            return;
+        }
+        isCalculating = true;
+        mStarFuture = new CompletableFuture<>();
+        mExecutorService.submit(() -> {
+            PixelStar star = getConfiguredStar();
+
+            if (star == null) {
+                mStarFuture.complete(null);
+                return;
+            }
+            mStarFuture.complete(star);   
+        });
+        
+        mStarFuture.whenComplete((star, u) -> {
+            Graphics2D vg2d = new VectorGraphics2D();
+            star.draw(vg2d);
+            CommandSequence commands = ((VectorGraphics2D) vg2d).getCommands();
+            SVGProcessor processor = new SVGProcessor();
+            Document doc = processor.getDocument(commands,
+                    new PageSize(star.getWidth(), 
+                        star.getHeight()));
+            try {
+                doc.writeTo(new FileOutputStream("star.svg"));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(
+                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(
+                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            mNumPixels.setText(("" + star.getNumberHoles()));
+        });
+    }
+    
     /**
      * Output the star to an EPS file.
      */
     private void exportAsEps() {
-        PixelStar star = getConfiguredStar();
-
-        if (star == null) {
+        if (isCalculating) {
             return;
         }
+        isCalculating = true;
+        mStarFuture = new CompletableFuture<>();
+        mExecutorService.submit(() -> {
+            PixelStar star = getConfiguredStar();
+
+            if (star == null) {
+                mStarFuture.complete(null);
+                return;
+            }
+            mStarFuture.complete(star);   
+        });
         
-        Graphics2D vg2d = new VectorGraphics2D();
-        star.draw(vg2d);
-        CommandSequence commands = ((VectorGraphics2D) vg2d).getCommands();
-        EPSProcessor epsProcessor = new EPSProcessor();
-        Document doc = epsProcessor.getDocument(commands,
-                new PageSize(star.getWidth(), 
-                    star.getHeight()));
-        try {
-            doc.writeTo(new FileOutputStream("star.eps"));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(
-                    RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(
-                    RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        mNumPixels.setText(("" + star.getNumberHoles()));
+        mStarFuture.whenComplete((star, u) -> {
+            Graphics2D vg2d = new VectorGraphics2D();
+            star.draw(vg2d);
+            CommandSequence commands = ((VectorGraphics2D) vg2d).getCommands();
+            EPSProcessor processor = new EPSProcessor();
+            Document doc = processor.getDocument(commands,
+                    new PageSize(star.getWidth(), 
+                        star.getHeight()));
+            try {
+                doc.writeTo(new FileOutputStream("star.eps"));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(
+                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(
+                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            mNumPixels.setText(("" + star.getNumberHoles()));
+        });
     }
         
     /**
      * Output the star to a PDF file.
      */
     private void exportAsPdf() {
-        PixelStar star = getConfiguredStar();
-
-        if (star == null) {
+        if (isCalculating) {
             return;
         }
+        isCalculating = true;
+        mStarFuture = new CompletableFuture<>();
+        mExecutorService.submit(() -> {
+            PixelStar star = getConfiguredStar();
+
+            if (star == null) {
+                mStarFuture.complete(null);
+                return;
+            }
+            mStarFuture.complete(star);   
+        });
         
-        Graphics2D vg2d = new VectorGraphics2D();
-        star.draw(vg2d);
-        CommandSequence commands = ((VectorGraphics2D) vg2d).getCommands();
-        PDFProcessor pdfProcessor = new PDFProcessor(true);
-        Document doc = pdfProcessor.getDocument(commands,
-                new PageSize(star.getWidth(), 
-                    star.getHeight()));
-        try {
-            doc.writeTo(new FileOutputStream("star.pdf"));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(
-                    RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(
-                    RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        mNumPixels.setText(("" + star.getNumberHoles()));
+        mStarFuture.whenComplete((star, u) -> {
+            Graphics2D vg2d = new VectorGraphics2D();
+            star.draw(vg2d);
+            CommandSequence commands = ((VectorGraphics2D) vg2d).getCommands();
+            PDFProcessor pdfProcessor = new PDFProcessor(true);
+            Document doc = pdfProcessor.getDocument(commands,
+                    new PageSize(star.getWidth(), 
+                        star.getHeight()));
+            try {
+                doc.writeTo(new FileOutputStream("star.pdf"));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(
+                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(
+                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            mNumPixels.setText(("" + star.getNumberHoles()));
+        });
     }
     
     /**
@@ -616,6 +693,7 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem jExportAsEps;
     private javax.swing.JMenuItem jExportAsPdf;
+    private javax.swing.JMenuItem jExportAsSvg;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
