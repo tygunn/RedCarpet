@@ -26,6 +26,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Defines a single layer in a {@link PixelStar}.
@@ -34,6 +35,45 @@ import java.util.List;
  */
 public class StarLayer {
    
+    /**
+     * Thin wrapper class on {@link Ellipse2D.Double} to provide the ability to
+     * store whether an ellipse is a vertex of a star.
+     */
+    public static class PixelHole extends Ellipse2D.Double {
+        /**
+         * See {@link Ellipse2D.Double#Double(double, double, double, double).
+         * @param x
+         * @param y
+         * @param w
+         * @param h 
+         */
+        public PixelHole(double x, double y, double w, double h) {
+            super(x, y, w, h);
+        }
+        
+        /**
+         * Indicates whether this ellipse is a vertex of a star.
+         */
+        private boolean mIsVertex = false;
+        
+        /**
+         * Sets whether this ellipse is a vertex of a star.
+         * @param isVertex {@code true} if it is a vertex, {@code false}
+         * otherwise.
+         */
+        public void setIsVertex(boolean isVertex) {
+            mIsVertex = isVertex;
+        }
+        
+        /**
+         * @return {@code true} if this ellipse is a vertex of a star,
+         * {@code false} otherwise.
+         */
+        public boolean isVertex() {
+            return mIsVertex;
+        }
+    };
+    
     /**
      * The star which makes up this layer.
      */
@@ -159,13 +199,14 @@ public class StarLayer {
                     % vertices.size());
             
             // Add the hole at the start of the segment on the star vertex
-            Ellipse2D startHole = new Ellipse2D.Double(
+            PixelHole startHole = new PixelHole(
                     /** top left coordinate */
                     start.getX() - (mHoleSize / 2.0), 
                     start.getY() - (mHoleSize / 2.0),
                     /** x and y width */
                     mHoleSize, 
                     mHoleSize);
+            startHole.setIsVertex(true);
             mHoles.add(startHole);
             
             // Divide up the space and add the pixels
@@ -183,15 +224,15 @@ public class StarLayer {
                 // double offsetY = yDistance * ((double)(pixelsToAdd+1) * mHoleSpacing / sideLength) * offset;
                 double offsetX = xDistance * offset;
                 double offsetY = yDistance * offset;
-                Ellipse2D newHole;
                 
                 // We place holes starting at the end and work our way back
-                newHole = new Ellipse2D.Double(
+                PixelHole newHole = new PixelHole(
                     end.getX() - offsetX - (mHoleSize / 2.0),
                     end.getY() - offsetY - (mHoleSize / 2.0),
                     /** x and y width */
                     mHoleSize, 
                     mHoleSize);
+                newHole.setIsVertex(false);
                 localHoles.add(newHole);
             }
             // This seems strange, but we generate the holes backwards from the
@@ -200,6 +241,25 @@ public class StarLayer {
             Collections.reverse(localHoles);
             mHoles.addAll(localHoles);
         }
+    }
+    
+    /**
+     * Returns a mutable list of the holes in this star layer.
+     * @return List of all holes, including vertices.
+     */
+    public List<Ellipse2D> getHolesList() {
+        return mHoles;
+    }
+    
+    /**
+     * Returns a list containing only the vertices of the star for this layer.
+     * @return List of the holes corresponding to the vertices of the star.
+     */
+    public List<Ellipse2D> getVertices() {
+        return mHoles.stream()
+                .filter(h -> h instanceof StarLayer.PixelHole
+                        && ((StarLayer.PixelHole)(h)).isVertex())
+                .collect(Collectors.toList());
     }
     
     /**
@@ -218,7 +278,7 @@ public class StarLayer {
     }
     
     /**
-     * Draws this star layer on the specifeid graphics canvas.
+     * Draws this star layer on the specified graphics canvas.
      * @param g The {@link Graphics2D} to draw to.
      * @param isLabellingHoles
      * @param isDrawingOutline
@@ -237,6 +297,7 @@ public class StarLayer {
         // Draw the holes.
         int holeCount = 1;
         for (Ellipse2D e : getHoles()) {
+            
             // Draw the hole
             Ellipse2D eTran = new Ellipse2D.Double(
                     e.getX() + at.getTranslateX(),
@@ -261,7 +322,8 @@ public class StarLayer {
                             (int) (e.getY() + at.getTranslateY()),
                             (int) (e.getX() + at.getTranslateX() 
                                     + (e.getWidth() / 2.0)),
-                            (int) (e.getY() + at.getTranslateY() + e.getHeight())
+                            (int) (e.getY() + at.getTranslateY() 
+                                    + e.getHeight())
                     );
 
                     g.drawLine(
@@ -298,10 +360,18 @@ public class StarLayer {
                 mStar.getVertices().get(1).getY());
     }
     
+    /**
+     * @return the width of this star layer as determined by the min and max X
+     * values contained in it.
+     */
     public double getWidth() {
         return getMaxX() - getMinX();
     }
     
+    /**
+     * @return the height of this star layer as determined by the min and max Y
+     * values contained in it.
+     */
     public double getHeight() {
         return getMaxY() - getMinY();
     }

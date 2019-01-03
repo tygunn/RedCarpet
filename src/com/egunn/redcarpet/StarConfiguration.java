@@ -34,7 +34,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,6 +46,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -112,6 +117,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         jExportAsEps = new javax.swing.JMenuItem();
         jExportAsPdf = new javax.swing.JMenuItem();
         jExportAsSvg = new javax.swing.JMenuItem();
+        jExportAsDxf = new javax.swing.JMenuItem();
+        jExportToXLights = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
@@ -310,6 +317,22 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
         fileMenu.add(jExportAsSvg);
 
+        jExportAsDxf.setText("Export as DXF");
+        jExportAsDxf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jExportAsDxfActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jExportAsDxf);
+
+        jExportToXLights.setText("Export to xLights");
+        jExportToXLights.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jExportToXLightsActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jExportToXLights);
+
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -385,6 +408,42 @@ public class StarConfiguration extends javax.swing.JFrame {
         exportAsSvg();
     }//GEN-LAST:event_jExportAsSvgActionPerformed
 
+    private void jExportAsDxfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportAsDxfActionPerformed
+        exportAsDxf();
+    }//GEN-LAST:event_jExportAsDxfActionPerformed
+
+    private void jExportToXLightsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportToXLightsActionPerformed
+        exportToXLights();
+    }//GEN-LAST:event_jExportToXLightsActionPerformed
+
+    /**
+     * Exports the current star to an xLights configuration.
+     */
+    private void exportToXLights() {
+        JFileChooser chooseDirectory = new JFileChooser();
+        chooseDirectory.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int chosenOption = chooseDirectory.showOpenDialog(this);
+        if (chosenOption == JFileChooser.APPROVE_OPTION) {
+            File chosenFolder = chooseDirectory.getSelectedFile();
+            
+            // Check for the xlights_rgbeffects file in the chosen dir.
+            Path xLightsPath = Paths.get(chosenFolder.getAbsolutePath(),
+                    "xlights_rgbeffects.xml");
+            
+            String chosenFileName = xLightsPath.toAbsolutePath().toString();
+            XLightsConfig config = new XLightsConfig(chosenFileName);
+            PixelStar star = getConfiguredStar(1.0);
+            config.addStar(star);
+            config.saveXml();
+            
+            //showModelChoiceDialog(config.getModelNames());
+        }
+    }
+    
+    private void showModelChoiceDialog(List<String> choices) {
+        
+    }
+    
     /**
      * Output the star to an SVG file.
      */
@@ -395,7 +454,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         isCalculating = true;
         mStarFuture = new CompletableFuture<>();
         mExecutorService.submit(() -> {
-            PixelStar star = getConfiguredStar();
+            PixelStar star = getConfiguredStar(
+                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution());
 
             if (star == null) {
                 mStarFuture.complete(null);
@@ -413,7 +473,9 @@ public class StarConfiguration extends javax.swing.JFrame {
                     new PageSize(star.getWidth(), 
                         star.getHeight()));
             try {
-                doc.writeTo(new FileOutputStream("star.svg"));
+                FileOutputStream stream = new FileOutputStream("star.svg");
+                doc.writeTo(stream);
+                stream.close();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(
                         RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
@@ -436,7 +498,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         isCalculating = true;
         mStarFuture = new CompletableFuture<>();
         mExecutorService.submit(() -> {
-            PixelStar star = getConfiguredStar();
+            PixelStar star = getConfiguredStar(
+                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution());
 
             if (star == null) {
                 mStarFuture.complete(null);
@@ -446,6 +509,11 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
         
         mStarFuture.whenComplete((star, u) -> {
+            if (star == null) {
+                System.out.println("Failed to generate star.");
+                return;
+            }
+            System.out.println("Writing star...");
             Graphics2D vg2d = new VectorGraphics2D();
             star.draw(vg2d);
             CommandSequence commands = ((VectorGraphics2D) vg2d).getCommands();
@@ -454,7 +522,9 @@ public class StarConfiguration extends javax.swing.JFrame {
                     new PageSize(star.getWidth(), 
                         star.getHeight()));
             try {
-                doc.writeTo(new FileOutputStream("star.eps"));
+                FileOutputStream stream = new FileOutputStream("star.eps");
+                doc.writeTo(stream);
+                stream.close();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(
                         RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
@@ -462,7 +532,34 @@ public class StarConfiguration extends javax.swing.JFrame {
                 Logger.getLogger(
                         RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            mNumPixels.setText(("" + star.getNumberHoles()));
+            System.out.println("Done writing star");
+        });
+    }
+    
+    /**
+     * Output the star to a DXF file.
+     */
+    private void exportAsDxf() {
+        if (isCalculating) {
+            return;
+        }
+        isCalculating = true;
+        mStarFuture = new CompletableFuture<>();
+        mExecutorService.submit(() -> {
+            PixelStar star = getConfiguredStar(1.0);
 
+            if (star == null) {
+                mStarFuture.complete(null);
+                return;
+            }
+            mStarFuture.complete(star);   
+        });
+        
+        mStarFuture.whenComplete((star, u) -> {
+            
+            
             mNumPixels.setText(("" + star.getNumberHoles()));
         });
     }
@@ -477,7 +574,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         isCalculating = true;
         mStarFuture = new CompletableFuture<>();
         mExecutorService.submit(() -> {
-            PixelStar star = getConfiguredStar();
+            PixelStar star = getConfiguredStar(
+                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution());
 
             if (star == null) {
                 mStarFuture.complete(null);
@@ -519,7 +617,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         isCalculating = true;
         mStarFuture = new CompletableFuture<>();
         mExecutorService.submit(() -> {
-            PixelStar star = getConfiguredStar();
+            PixelStar star = getConfiguredStar(
+                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution());
 
             if (star == null) {
                 return;
@@ -570,10 +669,11 @@ public class StarConfiguration extends javax.swing.JFrame {
     }
     
     /**
-     * Configure a {@link PixelStar} with the parameters specifeid in the UI.
+     * Configure a {@link PixelStar} with the parameters specified in the UI.
+     * @param pts The resolution to use when rendering in pts per inch.
      * @return The {@link PixelStar}.
      */
-    private PixelStar getConfiguredStar() {
+    private PixelStar getConfiguredStar(double pts) {
         String starWidthInchesStr = mStarWidthInches.getText();
         String starRatioStr = mStarRatio.getText();
         String holeDiameterInchesStr = mHoleDiameterInches.getText();
@@ -602,7 +702,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         double holeSpacing;
         double rowSpacing;
         int numRows;
-        double pts = java.awt.Toolkit.getDefaultToolkit().getScreenResolution();
+        
         try {
             starWidth = Double.parseDouble(starWidthInchesStr) * pts;
         } catch (NumberFormatException nfe) {
@@ -691,9 +791,11 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem jExportAsDxf;
     private javax.swing.JMenuItem jExportAsEps;
     private javax.swing.JMenuItem jExportAsPdf;
     private javax.swing.JMenuItem jExportAsSvg;
+    private javax.swing.JMenuItem jExportToXLights;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

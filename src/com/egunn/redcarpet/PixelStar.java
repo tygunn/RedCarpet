@@ -16,6 +16,9 @@
  */
 package com.egunn.redcarpet;
 
+import java.awt.BasicStroke;
+import static java.awt.BasicStroke.CAP_BUTT;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
@@ -32,7 +35,7 @@ public class PixelStar {
         OUTLINE, // Holes are drawn as outlines.
         SOLID, // Holes are solid black.
         OUTLINE_TARGET // Holes are drawn as outlines with a drill target in
-                       // the middle.
+                        // the middle.
     }
     
     /**
@@ -136,6 +139,9 @@ public class PixelStar {
      * @param g 
      */
     public void draw(Graphics2D g) {
+        g.setColor(Color.black);
+        g.setStroke(new BasicStroke(1.0f, CAP_BUTT, BasicStroke.JOIN_MITER));
+        
         // Draw the outline of the star.
         if (mIsDrawingBorder) {
             Path2D starPath = mBorder.getPath();
@@ -149,11 +155,11 @@ public class PixelStar {
         }
         
         // Draw a scale ruler.
-        String num = "1 inch";
+        /*String num = "1 inch";
                 g.drawString(num, 10.0f, 10.0f);
         g.drawLine(10, 10, 
                 (int) java.awt.Toolkit.getDefaultToolkit().getScreenResolution() 
-                        + 10, 10);
+                        + 10, 10);*/
     }
     
     private void buildStar() {
@@ -211,6 +217,10 @@ public class PixelStar {
     
     public int getNumberHoles() {
         return mNumHoles;
+    }
+    
+    public List<StarLayer> getLayers() {
+        return mStarLayers;
     }
 }
 
