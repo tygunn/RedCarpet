@@ -36,8 +36,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -45,9 +48,16 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.text.InternationalFormatter;
+import javax.swing.text.NumberFormatter;
 
 /**
  * Facilitates configuration of a star.
@@ -416,11 +426,43 @@ public class StarConfiguration extends javax.swing.JFrame {
         exportToXLights();
     }//GEN-LAST:event_jExportToXLightsActionPerformed
 
+    
+    
     /**
      * Exports the current star to an xLights configuration.
      */
     private void exportToXLights() {
+        JTextField modelNameField = new JTextField(20);
+        NumberFormat format = DecimalFormat.getInstance();
+        format.setMinimumFractionDigits(2);
+        format.setMaximumFractionDigits(2);
+        format.setRoundingMode(RoundingMode.HALF_UP);
+        InternationalFormatter formatter = new InternationalFormatter(format);
+        formatter.setAllowsInvalid(false);
+        formatter.setMinimum(0.0);
+        formatter.setMaximum(1000.00);
+        JFormattedTextField modelScaleField = 
+                new JFormattedTextField(formatter);
+        modelScaleField.setColumns(10);
+        
+        JPanel myPanel = new JPanel();
+        myPanel.add(new JLabel("Model Name:"));
+        myPanel.add(modelNameField);
+        myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+        myPanel.add(new JLabel("Model scale factor:"));
+        myPanel.add(modelScaleField);
+
+        int result = JOptionPane.showConfirmDialog(null, myPanel, 
+                 "Choose Model Name and Scale", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            saveToXLights(modelNameField.getText(), 
+                    Double.parseDouble(modelScaleField.getText()));
+        }
+    }
+    
+    private void saveToXLights(String modelName, double scale) {
         JFileChooser chooseDirectory = new JFileChooser();
+        chooseDirectory.setDialogTitle("Select root of your xLights directory");
         chooseDirectory.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int chosenOption = chooseDirectory.showOpenDialog(this);
         if (chosenOption == JFileChooser.APPROVE_OPTION) {
@@ -432,16 +474,12 @@ public class StarConfiguration extends javax.swing.JFrame {
             
             String chosenFileName = xLightsPath.toAbsolutePath().toString();
             XLightsConfig config = new XLightsConfig(chosenFileName);
-            PixelStar star = getConfiguredStar(1.0);
-            config.addStar(star);
+            // scale
+            PixelStar star = getConfiguredStar(scale);
+            config.addStarAsSegments(star, modelName);
+            //config.addStarAsStars(star, modelName);
             config.saveXml();
-            
-            //showModelChoiceDialog(config.getModelNames());
         }
-    }
-    
-    private void showModelChoiceDialog(List<String> choices) {
-        
     }
     
     /**

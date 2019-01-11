@@ -17,6 +17,7 @@
 package com.egunn.redcarpet;
 
 import com.egunn.redcarpet.PixelStar.HoleFormat;
+import com.sun.javafx.binding.StringFormatter;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -72,6 +73,11 @@ public class StarLayer {
         public boolean isVertex() {
             return mIsVertex;
         }
+        
+        @Override
+        public String toString() {
+            return String.format("(%.2f, %.2f)]", getCenterX(), getCenterY());
+        }
     };
     
     /**
@@ -80,9 +86,16 @@ public class StarLayer {
     private final Star mStar;
     
     /**
-     * The spacing between each of the holes, along the sides of the stars.
+     * The desired spacing between each of the holes, along the sides of the
+     * stars.
      */
     private final double mHoleSpacing;
+    
+    /**
+     * The actual spacing between each hole taking into account how many holes
+     * we ended up placing on each side.
+     */
+    private double mActualHoleSpacing;
     
     /**
      * The size of each hole.
@@ -197,6 +210,10 @@ public class StarLayer {
             Point2D start = vertices.get(ix);
             Point2D end = vertices.get((ix + 1)
                     % vertices.size());
+            double distance = Point2D.distance(start.getX(), start.getY(), 
+                    end.getX(), end.getY());
+            
+            mActualHoleSpacing = distance / (double)(pixelsToAdd - 1);
             
             // Add the hole at the start of the segment on the star vertex
             PixelHole startHole = new PixelHole(
@@ -214,21 +231,14 @@ public class StarLayer {
             for (int addIx = 1 ; addIx < pixelsToAdd+1; addIx++) {
                 // Determine where between the start and end point we are
                 // placing the hole.
-                double offset = (double) addIx / (double) (pixelsToAdd + 1);
-                double xDistance = end.getX() - start.getX();
-                double yDistance = end.getY() - start.getY();
+                double offset = (double) ((pixelsToAdd + 1) - addIx) 
+                        / (double) (pixelsToAdd + 1);
                 
-                // This code can be used to place the holes such that they are
-                // not evenly spaced on each edge.
-                // double offsetX = xDistance * ((double)(pixelsToAdd+1) * mHoleSpacing / sideLength) * offset;
-                // double offsetY = yDistance * ((double)(pixelsToAdd+1) * mHoleSpacing / sideLength) * offset;
-                double offsetX = xDistance * offset;
-                double offsetY = yDistance * offset;
-                
-                // We place holes starting at the end and work our way back
                 PixelHole newHole = new PixelHole(
-                    end.getX() - offsetX - (mHoleSize / 2.0),
-                    end.getY() - offsetY - (mHoleSize / 2.0),
+                    start.getX() + (end.getX() - start.getX()) * offset 
+                            - (mHoleSize / 2.0),
+                    start.getY() + (end.getY() - start.getY()) * offset 
+                            - (mHoleSize / 2.0),
                     /** x and y width */
                     mHoleSize, 
                     mHoleSize);
@@ -296,7 +306,7 @@ public class StarLayer {
         
         // Draw the holes.
         int holeCount = 1;
-        for (Ellipse2D e : getHoles()) {
+        for (Ellipse2D e : getHolesList()) {
             
             // Draw the hole
             Ellipse2D eTran = new Ellipse2D.Double(
@@ -340,7 +350,7 @@ public class StarLayer {
             
             if (isLabellingHoles) {
                 // Label each hole with a hole number.
-                String num = "" + (mHoleCountStart + holeCount) + "";
+                String num = "" + (mHoleCountStart + holeCount);
                 g.drawString(num, 
                         (float)(e.getX() + at.getTranslateX()), 
                         (float) ( e.getY() + at.getTranslateY()));
@@ -433,7 +443,6 @@ public class StarLayer {
         if (mTranslation != null ) {
             return mTranslation;
         }
-
         return AffineTransform.getTranslateInstance(
                 -1.0 * getMinX(), 
                 -1.0 * getMinY());
@@ -453,12 +462,24 @@ public class StarLayer {
         return mHoles.size();
     }
     
+    /**
+     * @return the actual hole spacing; this takes into account the fact that
+     * the first layer is going to have {@link #mHoleSpacing} between each pixel
+     * but that subsequent layers simply get one less pixel, so the spacing
+     * changes.
+     */
+    public double getActualHoleSpacing() {
+        return mActualHoleSpacing;
+    }
+    
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("[StarLayer ");
+        sb.append("pixPerSide=");
+        sb.append(mHoles.size() / 10);
         
-        sb.append("topLeft = (");
+        sb.append(", topLeft=(");
         sb.append(getMinX());
         sb.append(",");
         sb.append(getMinY());
