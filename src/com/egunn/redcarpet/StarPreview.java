@@ -47,9 +47,9 @@ public class StarPreview extends javax.swing.JFrame {
         mImageLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout());
+        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
-        mImageLabel.setText("jLabel1");
+        mImageLabel.setToolTipText("");
         jScrollPane1.setViewportView(mImageLabel);
 
         getContentPane().add(jScrollPane1);

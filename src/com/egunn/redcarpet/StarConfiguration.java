@@ -122,12 +122,12 @@ public class StarConfiguration extends javax.swing.JFrame {
         mNumPixels = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         mHoleFormat = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        jComboUnits = new javax.swing.JComboBox<>();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jExportAsEps = new javax.swing.JMenuItem();
-        jExportAsPdf = new javax.swing.JMenuItem();
         jExportAsSvg = new javax.swing.JMenuItem();
-        jExportAsDxf = new javax.swing.JMenuItem();
         jExportToXLights = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
@@ -137,49 +137,64 @@ public class StarConfiguration extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("Star Width (inches):");
+        jLabel1.setText("Star Width (units):");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel1, gridBagConstraints);
 
         mStarWidthInches.setText("72");
-        mStarWidthInches.setMaximumSize(new java.awt.Dimension(140, 20));
+        mStarWidthInches.setMaximumSize(new java.awt.Dimension(140, 24));
         mStarWidthInches.setMinimumSize(new java.awt.Dimension(140, 20));
+        mStarWidthInches.setName(""); // NOI18N
         mStarWidthInches.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mStarWidthInchesActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(mStarWidthInches, gridBagConstraints);
 
         jLabel2.setText("Star Ratio (outer/inner):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel2, gridBagConstraints);
 
         mStarRatio.setText("2.0755");
-        mStarRatio.setMaximumSize(new java.awt.Dimension(140, 20));
-        mStarRatio.setMinimumSize(new java.awt.Dimension(140, 20));
+        mStarRatio.setMaximumSize(new java.awt.Dimension(140, 24));
+        mStarRatio.setMinimumSize(new java.awt.Dimension(140, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(mStarRatio, gridBagConstraints);
 
-        jLabel3.setText("Hole Diameter (inches):");
+        jLabel3.setText("Hole Diameter (units):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel3, gridBagConstraints);
 
         mHoleDiameterInches.setText("0.472441");
-        mHoleDiameterInches.setMaximumSize(new java.awt.Dimension(140, 20));
-        mHoleDiameterInches.setMinimumSize(new java.awt.Dimension(140, 20));
+        mHoleDiameterInches.setMaximumSize(new java.awt.Dimension(140, 24));
+        mHoleDiameterInches.setMinimumSize(new java.awt.Dimension(140, 24));
         mHoleDiameterInches.setName(""); // NOI18N
         mHoleDiameterInches.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,49 +203,75 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(mHoleDiameterInches, gridBagConstraints);
 
-        jLabel4.setText("Hole Spacing (inches):");
+        jLabel4.setText("Hole Spacing (units):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel4, gridBagConstraints);
 
         mHoleSpacingInches.setText("1.5");
+        mHoleSpacingInches.setMinimumSize(new java.awt.Dimension(60, 24));
+        mHoleSpacingInches.setPreferredSize(new java.awt.Dimension(60, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(mHoleSpacingInches, gridBagConstraints);
 
-        jLabel5.setText("Row Spacing (inches):");
+        jLabel5.setText("Row Spacing (units):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel5, gridBagConstraints);
 
         mRowSpacingInches.setText("2.0");
+        mRowSpacingInches.setMinimumSize(new java.awt.Dimension(60, 24));
+        mRowSpacingInches.setPreferredSize(new java.awt.Dimension(60, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(mRowSpacingInches, gridBagConstraints);
 
         jLabel6.setText("Rows / Layers:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
         getContentPane().add(jLabel6, gridBagConstraints);
 
         mRows.setText("10");
+        mRows.setMinimumSize(new java.awt.Dimension(60, 24));
+        mRows.setPreferredSize(new java.awt.Dimension(60, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(mRows, gridBagConstraints);
 
         mBuildStar.setText("Build");
@@ -242,7 +283,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.gridheight = 2;
         getContentPane().add(mBuildStar, gridBagConstraints);
@@ -251,7 +292,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         mIsDrawBorder.setText("Draw Outer Border");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(mIsDrawBorder, gridBagConstraints);
 
@@ -259,7 +300,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         mIsDrawInnerBorders.setText("Draw Inner Star Outlines");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(mIsDrawInnerBorders, gridBagConstraints);
 
@@ -267,22 +308,24 @@ public class StarConfiguration extends javax.swing.JFrame {
         mIsLabelHoles.setText("Label Holes");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(mIsLabelHoles, gridBagConstraints);
 
         jLabel7.setText("Number of Pixels:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jLabel7, gridBagConstraints);
 
         mNumPixels.setText("<undefined>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(mNumPixels, gridBagConstraints);
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
@@ -295,9 +338,28 @@ public class StarConfiguration extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(jPanel1, gridBagConstraints);
+
+        jLabel8.setText("Units");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        getContentPane().add(jLabel8, gridBagConstraints);
+
+        jComboUnits.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inches", "Millimeters", "Centimeters" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jComboUnits, gridBagConstraints);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -310,15 +372,6 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
         fileMenu.add(jExportAsEps);
 
-        jExportAsPdf.setText("Export as PDF");
-        jExportAsPdf.setEnabled(false);
-        jExportAsPdf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jExportAsPdfActionPerformed(evt);
-            }
-        });
-        fileMenu.add(jExportAsPdf);
-
         jExportAsSvg.setText("Export as SVG");
         jExportAsSvg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -326,14 +379,6 @@ public class StarConfiguration extends javax.swing.JFrame {
             }
         });
         fileMenu.add(jExportAsSvg);
-
-        jExportAsDxf.setText("Export as DXF");
-        jExportAsDxf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jExportAsDxfActionPerformed(evt);
-            }
-        });
-        fileMenu.add(jExportAsDxf);
 
         jExportToXLights.setText("Export to xLights");
         jExportToXLights.addActionListener(new java.awt.event.ActionListener() {
@@ -410,17 +455,9 @@ public class StarConfiguration extends javax.swing.JFrame {
         exportAsEps();
     }//GEN-LAST:event_jExportAsEpsActionPerformed
 
-    private void jExportAsPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportAsPdfActionPerformed
-        exportAsPdf();
-    }//GEN-LAST:event_jExportAsPdfActionPerformed
-
     private void jExportAsSvgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportAsSvgActionPerformed
         exportAsSvg();
     }//GEN-LAST:event_jExportAsSvgActionPerformed
-
-    private void jExportAsDxfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportAsDxfActionPerformed
-        exportAsDxf();
-    }//GEN-LAST:event_jExportAsDxfActionPerformed
 
     private void jExportToXLightsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportToXLightsActionPerformed
         exportToXLights();
@@ -493,7 +530,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         mStarFuture = new CompletableFuture<>();
         mExecutorService.submit(() -> {
             PixelStar star = getConfiguredStar(
-                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution());
+                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution(),
+                    getUnitConversion());
 
             if (star == null) {
                 mStarFuture.complete(null);
@@ -537,7 +575,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         mStarFuture = new CompletableFuture<>();
         mExecutorService.submit(() -> {
             PixelStar star = getConfiguredStar(
-                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution());
+                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution(),
+                    getUnitConversion());
 
             if (star == null) {
                 mStarFuture.complete(null);
@@ -576,32 +615,6 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
     }
     
-    /**
-     * Output the star to a DXF file.
-     */
-    private void exportAsDxf() {
-        if (isCalculating) {
-            return;
-        }
-        isCalculating = true;
-        mStarFuture = new CompletableFuture<>();
-        mExecutorService.submit(() -> {
-            PixelStar star = getConfiguredStar(1.0);
-
-            if (star == null) {
-                mStarFuture.complete(null);
-                return;
-            }
-            mStarFuture.complete(star);   
-        });
-        
-        mStarFuture.whenComplete((star, u) -> {
-            
-            
-            mNumPixels.setText(("" + star.getNumberHoles()));
-        });
-    }
-        
     /**
      * Output the star to a PDF file.
      */
@@ -656,7 +669,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         mStarFuture = new CompletableFuture<>();
         mExecutorService.submit(() -> {
             PixelStar star = getConfiguredStar(
-                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution());
+                    java.awt.Toolkit.getDefaultToolkit().getScreenResolution(),
+                    getUnitConversion());
 
             if (star == null) {
                 return;
@@ -706,12 +720,35 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
     }
     
+    private PixelStar getConfiguredStar(double pts) {
+        return getConfiguredStar(pts, 1.0);
+    }
+    
+    private double getUnitConversion() {
+        double unitConversion = 0.0;
+        switch (jComboUnits.getSelectedIndex()) {
+            case 0:
+                unitConversion = 1.0;
+                break;
+            case 1:
+                unitConversion = 0.0393700787;
+                break;
+            case 2:
+                unitConversion = 0.3937007874;
+                break;
+            default:
+                break;
+        }
+        System.out.println("Conversion: " + unitConversion);
+        return unitConversion;
+    }
+    
     /**
      * Configure a {@link PixelStar} with the parameters specified in the UI.
      * @param pts The resolution to use when rendering in pts per inch.
      * @return The {@link PixelStar}.
      */
-    private PixelStar getConfiguredStar(double pts) {
+    private PixelStar getConfiguredStar(double pts, double unitConversion) {
         String starWidthInchesStr = mStarWidthInches.getText();
         String starRatioStr = mStarRatio.getText();
         String holeDiameterInchesStr = mHoleDiameterInches.getText();
@@ -742,7 +779,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         int numRows;
         
         try {
-            starWidth = Double.parseDouble(starWidthInchesStr) * pts;
+            starWidth = Double.parseDouble(starWidthInchesStr) * pts 
+                    * unitConversion;
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, "Width must be a number.");
             return null;
@@ -754,21 +792,24 @@ public class StarConfiguration extends javax.swing.JFrame {
             return null;
         }
         try {
-            holeDiameter = Double.parseDouble(holeDiameterInchesStr) * pts;
+            holeDiameter = Double.parseDouble(holeDiameterInchesStr) * pts
+                    * unitConversion;
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, 
                     "Hole diameter must be a number.");
             return null;
         }
         try {
-            holeSpacing = Double.parseDouble(holeSpacingInchesStr) * pts;
+            holeSpacing = Double.parseDouble(holeSpacingInchesStr) * pts 
+                    * unitConversion;
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, 
                     "Hole spacing must be a number.");
             return null;
         }
         try {
-            rowSpacing = Double.parseDouble(rowSpacingInchesStr) * pts * 2.0;
+            rowSpacing = Double.parseDouble(rowSpacingInchesStr) * pts * 2.0
+                    * unitConversion;
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, 
                     "Row spacing must be a number.");
@@ -780,6 +821,7 @@ public class StarConfiguration extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Rows must be a whole.");
             return null;
         }
+        
         
         PixelStar pixelStar = new PixelStar(starWidth, starRatio, holeDiameter, 
                 holeSpacing, numRows, rowSpacing, mIsDrawBorder.isSelected(),
@@ -829,9 +871,8 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JMenuItem jExportAsDxf;
+    private javax.swing.JComboBox<String> jComboUnits;
     private javax.swing.JMenuItem jExportAsEps;
-    private javax.swing.JMenuItem jExportAsPdf;
     private javax.swing.JMenuItem jExportAsSvg;
     private javax.swing.JMenuItem jExportToXLights;
     private javax.swing.JLabel jLabel1;
@@ -841,6 +882,7 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton mBuildStar;
     private javax.swing.JTextField mHoleDiameterInches;
