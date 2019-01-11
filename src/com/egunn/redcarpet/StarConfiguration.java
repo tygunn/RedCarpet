@@ -212,7 +212,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel5, gridBagConstraints);
 
-        mRowSpacingInches.setText("5.0");
+        mRowSpacingInches.setText("2.0");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -768,7 +768,7 @@ public class StarConfiguration extends javax.swing.JFrame {
             return null;
         }
         try {
-            rowSpacing = Double.parseDouble(rowSpacingInchesStr) * pts;
+            rowSpacing = Double.parseDouble(rowSpacingInchesStr) * pts * 2.0;
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, 
                     "Row spacing must be a number.");
