@@ -699,13 +699,17 @@ public class StarConfiguration extends javax.swing.JFrame {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
             }
+            try {
             if (mPreview == null) {
                 mPreview = new StarPreview();
                 mPreview.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                mPreview.setLocationRelativeTo(null);
-                mPreview.setVisible(true);
+                mPreview.setLocationRelativeTo(null);   
             }
-            mPreview.getLabel().setIcon(new ImageIcon(bImg));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mPreview.setVisible(true);
+            mPreview.setImage(bImg);
             
             Rectangle bounds = mPreview.getScrollPane().getViewport()
                     .getViewRect();

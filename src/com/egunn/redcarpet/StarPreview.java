@@ -17,6 +17,14 @@
 package com.egunn.redcarpet;
 
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
 /**
@@ -24,16 +32,25 @@ import javax.swing.JScrollPane;
  * @author tyler
  */
 public class StarPreview extends javax.swing.JFrame {
-
+    private ExecutorService mExecutorService = Executors.newCachedThreadPool();
+    private BufferedImage mImage;
+    private double mCurrentScrollFactor = 1.0f;
+    private CompletableFuture<BufferedImage> mScaleFuture = null;
+    
     /**
      * Creates new form StarPreview
      */
     public StarPreview() {
         setPreferredSize(new Dimension(600,600));
-        
         initComponents();
+
     }
 
+    public void setImage(BufferedImage bi) {
+        mImage = bi;
+        jImageLabel.setIcon(new ImageIcon(bi));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,29 +61,81 @@ public class StarPreview extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        mImageLabel = new javax.swing.JLabel();
+        jImageLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
+        getContentPane().setLayout(new java.awt.GridLayout(1, 1));
 
-        mImageLabel.setToolTipText("");
-        jScrollPane1.setViewportView(mImageLabel);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(600, 600));
+
+        jImageLabel.setToolTipText("");
+        jImageLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jImageLabel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                jImageLabelMouseWheelMoved(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jImageLabel);
+        jImageLabel.getAccessibleContext().setAccessibleName("");
 
         getContentPane().add(jScrollPane1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public javax.swing.JLabel getLabel() {
-        return mImageLabel;
-    }
+    private void jImageLabelMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_jImageLabelMouseWheelMoved
+        
+        if (evt.getPreciseWheelRotation() > 0) {
+            mCurrentScrollFactor = Math.min(1.0, mCurrentScrollFactor + 0.15);
+        } else {
+            mCurrentScrollFactor = Math.max(0.05, mCurrentScrollFactor - 0.15);
+        }
+        
+        updateImage();
+    }//GEN-LAST:event_jImageLabelMouseWheelMoved
     
     public javax.swing.JScrollPane getScrollPane() {
         return jScrollPane1;
     }
+    
+    private void updateImage() {
+        if (mScaleFuture != null) {
+             return;
+        }
+        mScaleFuture = new CompletableFuture<BufferedImage>();
+        mExecutorService.submit(() -> {
+            int width = (int)(mCurrentScrollFactor * mImage.getWidth(null));
+            int height = (int)(mCurrentScrollFactor * mImage.getHeight(null));
+            Image resized = mImage.getScaledInstance(
+                    width, 
+                    height, 
+                    Image.SCALE_AREA_AVERAGING);
+            
+             BufferedImage bufferedScaled = new BufferedImage(
+                     resized.getWidth(null), 
+                     resized.getHeight(null), 
+                     BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d = bufferedScaled.createGraphics();
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
+                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2d.drawImage(resized, 0, 0, width, height, null);
+            g2d.dispose();
+            mScaleFuture.complete(bufferedScaled);
+        });
+        
+        mScaleFuture.whenComplete((img, u) -> {
+                try {
+                    jImageLabel.setIcon(new ImageIcon(img));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mScaleFuture = null;
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jImageLabel;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel mImageLabel;
     // End of variables declaration//GEN-END:variables
 }
+

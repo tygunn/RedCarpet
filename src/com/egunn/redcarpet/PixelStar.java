@@ -184,7 +184,6 @@ public class PixelStar {
                 sl = new StarLayer(width - ((double)layer * mRowSpacing), 
                         mPentagonRatio, mHoleSpacing, mHoleDiameter, numHoles, 
                         totalPixels);
-                
             }
             if (trans == null) {
                 trans = sl.getOffsetTransform();
