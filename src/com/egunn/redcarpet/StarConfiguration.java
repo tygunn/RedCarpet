@@ -29,12 +29,11 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
+import java.awt.dnd.DragSource;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.nio.file.Path;
@@ -47,9 +46,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -57,7 +56,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.InternationalFormatter;
-import javax.swing.text.NumberFormatter;
 
 /**
  * Facilitates configuration of a star.
@@ -69,6 +67,8 @@ public class StarConfiguration extends javax.swing.JFrame {
     private StarPreview mPreview = null;
     private CompletableFuture<PixelStar> mStarFuture = null;
     private ExecutorService mExecutorService = Executors.newCachedThreadPool();
+    private StarRepository mStarRepository = new StarRepository();
+    
     /**
      * Creates new form StarConfiguration
      */
@@ -82,6 +82,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         mHoleFormat.addItem("Outline");
         mHoleFormat.addItem("Outline w/center");
         mHoleFormat.addItem("Solid");
+        
+        loadDefaultStar();
     }
 
     private void showSplashScreen() {
@@ -124,8 +126,13 @@ public class StarConfiguration extends javax.swing.JFrame {
         mHoleFormat = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jComboUnits = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jModelName = new javax.swing.JTextField();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        jNewItem = new javax.swing.JMenuItem();
+        jSaveItem = new javax.swing.JMenuItem();
+        jLoadMenuItem = new javax.swing.JMenuItem();
         jExportAsEps = new javax.swing.JMenuItem();
         jExportAsSvg = new javax.swing.JMenuItem();
         jExportToXLights = new javax.swing.JMenuItem();
@@ -135,29 +142,28 @@ public class StarConfiguration extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(538, 450));
+        setMinimumSize(new java.awt.Dimension(538, 450));
+        setPreferredSize(new java.awt.Dimension(538, 450));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setText("Star Width (units):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel1, gridBagConstraints);
 
         mStarWidthInches.setText("72");
-        mStarWidthInches.setMaximumSize(new java.awt.Dimension(140, 24));
-        mStarWidthInches.setMinimumSize(new java.awt.Dimension(140, 20));
+        mStarWidthInches.setMaximumSize(new java.awt.Dimension(120, 30));
+        mStarWidthInches.setMinimumSize(new java.awt.Dimension(120, 30));
         mStarWidthInches.setName(""); // NOI18N
-        mStarWidthInches.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mStarWidthInchesActionPerformed(evt);
-            }
-        });
+        mStarWidthInches.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
@@ -167,18 +173,19 @@ public class StarConfiguration extends javax.swing.JFrame {
         jLabel2.setText("Star Ratio (outer/inner):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel2, gridBagConstraints);
 
         mStarRatio.setText("2.0755");
-        mStarRatio.setMaximumSize(new java.awt.Dimension(140, 24));
-        mStarRatio.setMinimumSize(new java.awt.Dimension(140, 24));
+        mStarRatio.setMaximumSize(new java.awt.Dimension(120, 30));
+        mStarRatio.setMinimumSize(new java.awt.Dimension(120, 30));
+        mStarRatio.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
@@ -188,22 +195,18 @@ public class StarConfiguration extends javax.swing.JFrame {
         jLabel3.setText("Hole Diameter (units):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel3, gridBagConstraints);
 
         mHoleDiameterInches.setText("0.472441");
-        mHoleDiameterInches.setMaximumSize(new java.awt.Dimension(140, 24));
-        mHoleDiameterInches.setMinimumSize(new java.awt.Dimension(140, 24));
+        mHoleDiameterInches.setMaximumSize(new java.awt.Dimension(120, 30));
+        mHoleDiameterInches.setMinimumSize(new java.awt.Dimension(120, 30));
         mHoleDiameterInches.setName(""); // NOI18N
-        mHoleDiameterInches.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mHoleDiameterInchesActionPerformed(evt);
-            }
-        });
+        mHoleDiameterInches.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
@@ -213,18 +216,19 @@ public class StarConfiguration extends javax.swing.JFrame {
         jLabel4.setText("Hole Spacing (units):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel4, gridBagConstraints);
 
         mHoleSpacingInches.setText("1.5");
-        mHoleSpacingInches.setMinimumSize(new java.awt.Dimension(60, 24));
-        mHoleSpacingInches.setPreferredSize(new java.awt.Dimension(60, 20));
+        mHoleSpacingInches.setMaximumSize(new java.awt.Dimension(120, 30));
+        mHoleSpacingInches.setMinimumSize(new java.awt.Dimension(120, 30));
+        mHoleSpacingInches.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
@@ -234,18 +238,19 @@ public class StarConfiguration extends javax.swing.JFrame {
         jLabel5.setText("Row Spacing (units):");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         getContentPane().add(jLabel5, gridBagConstraints);
 
         mRowSpacingInches.setText("2.0");
-        mRowSpacingInches.setMinimumSize(new java.awt.Dimension(60, 24));
-        mRowSpacingInches.setPreferredSize(new java.awt.Dimension(60, 20));
+        mRowSpacingInches.setMaximumSize(new java.awt.Dimension(120, 30));
+        mRowSpacingInches.setMinimumSize(new java.awt.Dimension(120, 30));
+        mRowSpacingInches.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
@@ -255,7 +260,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         jLabel6.setText("Rows / Layers:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
@@ -263,11 +268,12 @@ public class StarConfiguration extends javax.swing.JFrame {
         getContentPane().add(jLabel6, gridBagConstraints);
 
         mRows.setText("10");
-        mRows.setMinimumSize(new java.awt.Dimension(60, 24));
-        mRows.setPreferredSize(new java.awt.Dimension(60, 20));
+        mRows.setMaximumSize(new java.awt.Dimension(120, 30));
+        mRows.setMinimumSize(new java.awt.Dimension(120, 30));
+        mRows.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
@@ -283,7 +289,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.gridheight = 2;
         getContentPane().add(mBuildStar, gridBagConstraints);
@@ -292,7 +298,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         mIsDrawBorder.setText("Draw Outer Border");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(mIsDrawBorder, gridBagConstraints);
 
@@ -300,7 +306,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         mIsDrawInnerBorders.setText("Draw Inner Star Outlines");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(mIsDrawInnerBorders, gridBagConstraints);
 
@@ -308,14 +314,14 @@ public class StarConfiguration extends javax.swing.JFrame {
         mIsLabelHoles.setText("Label Holes");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(mIsLabelHoles, gridBagConstraints);
 
         jLabel7.setText("Number of Pixels:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jLabel7, gridBagConstraints);
@@ -323,7 +329,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         mNumPixels.setText("<undefined>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(mNumPixels, gridBagConstraints);
@@ -338,20 +344,43 @@ public class StarConfiguration extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         getContentPane().add(jPanel1, gridBagConstraints);
 
-        jLabel8.setText("Units");
+        jLabel8.setText("Units:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 3;
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jLabel8, gridBagConstraints);
 
         jComboUnits.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inches", "Millimeters", "Centimeters" }));
+        jComboUnits.setMinimumSize(new java.awt.Dimension(120, 30));
+        jComboUnits.setPreferredSize(new java.awt.Dimension(120, 30));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 3;
+        gridBagConstraints.ipady = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jComboUnits, gridBagConstraints);
+
+        jLabel9.setText("Model Name:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jLabel9, gridBagConstraints);
+
+        jModelName.setMaximumSize(null);
+        jModelName.setMinimumSize(new java.awt.Dimension(120, 30));
+        jModelName.setPreferredSize(new java.awt.Dimension(120, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -359,10 +388,34 @@ public class StarConfiguration extends javax.swing.JFrame {
         gridBagConstraints.ipady = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jComboUnits, gridBagConstraints);
+        getContentPane().add(jModelName, gridBagConstraints);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
+
+        jNewItem.setText("New...");
+        jNewItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jNewItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jNewItem);
+
+        jSaveItem.setText("Save...");
+        jSaveItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSaveItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jSaveItem);
+
+        jLoadMenuItem.setText("Load...");
+        jLoadMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jLoadMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jLoadMenuItem);
 
         jExportAsEps.setText("Export as EPS");
         jExportAsEps.addActionListener(new java.awt.event.ActionListener() {
@@ -427,14 +480,6 @@ public class StarConfiguration extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mStarWidthInchesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mStarWidthInchesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mStarWidthInchesActionPerformed
-
-    private void mHoleDiameterInchesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mHoleDiameterInchesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mHoleDiameterInchesActionPerformed
-
     private void mBuildStarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mBuildStarActionPerformed
         outputStar();
     }//GEN-LAST:event_mBuildStarActionPerformed
@@ -463,7 +508,149 @@ public class StarConfiguration extends javax.swing.JFrame {
         exportToXLights();
     }//GEN-LAST:event_jExportToXLightsActionPerformed
 
+    private void jSaveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSaveItemActionPerformed
+        saveConfiguration();
+    }//GEN-LAST:event_jSaveItemActionPerformed
+
+    private void jLoadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoadMenuItemActionPerformed
+        loadConfiguration();
+    }//GEN-LAST:event_jLoadMenuItemActionPerformed
+
+    private void jNewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNewItemActionPerformed
+        newConfiguration();
+    }//GEN-LAST:event_jNewItemActionPerformed
+
+    /**
+     * Create a new configuration; basically just empty out the model name so
+     * the user can work on the current one but as a new star.
+     */
+    private void newConfiguration() {
+        jModelName.setText("");
+    }
     
+    /**
+     * Prompts the user with a list of the stars so they can load one to edit.
+     */
+    private void loadConfiguration() {
+        List<StarParameters> stars = mStarRepository.getStars();
+        List<String> modelNames = stars.stream()
+                .map(s -> s.getStarName())
+                .collect(Collectors.toList());
+        
+        String toLoad = (String) JOptionPane.showInputDialog(
+                null, "Choose model to load",
+                "Choose model to load", JOptionPane.QUESTION_MESSAGE,
+                null, modelNames.toArray(), modelNames.get(0));
+        if (toLoad == null ) {
+            return;
+        }
+        StarParameters params = stars.stream()
+                .filter(s-> s.getStarName().equals(toLoad))
+                .findFirst().get();
+        setParametersToUi(params);
+    }
+    
+    /**
+     * Save the current star configuration.
+     */
+    private void saveConfiguration() {
+        StarParameters params = getCurrentConfiguration();
+        mStarRepository.updateStarElement(params);
+    }
+    
+    /**
+     * Retrieves an instance of {@link StarParameters} with the current config
+     * in the UI.
+     * @return 
+     */
+    private StarParameters getCurrentConfiguration() {
+        String starWidthInchesStr = mStarWidthInches.getText();
+        String starRatioStr = mStarRatio.getText();
+        String holeDiameterInchesStr = mHoleDiameterInches.getText();
+        String holeSpacingInchesStr = mHoleSpacingInches.getText();
+        String rowSpacingInchesStr = mRowSpacingInches.getText();
+        String rowsStr = mRows.getText();
+        
+        String starName;
+        String units;
+        double starWidth;
+        double ratio;
+        double holeDiameter; 
+        double holeSpacing; 
+        double rowSpacing;
+        int layers;
+        
+        starName = jModelName.getText();
+        units = jComboUnits.getSelectedItem().toString();
+        
+        try {
+            starWidth = Double.parseDouble(starWidthInchesStr);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "Width must be a number.");
+            return null;
+        }
+        try {
+            ratio = Double.parseDouble(starRatioStr);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "Ratio must be a number.");
+            return null;
+        }
+        try {
+            holeDiameter = Double.parseDouble(holeDiameterInchesStr);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, 
+                    "Hole diameter must be a number.");
+            return null;
+        }
+        try {
+            holeSpacing = Double.parseDouble(holeSpacingInchesStr);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, 
+                    "Hole spacing must be a number.");
+            return null;
+        }
+        try {
+            rowSpacing = Double.parseDouble(rowSpacingInchesStr);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, 
+                    "Row spacing must be a number.");
+            return null;
+        }
+        try {
+            layers = Integer.parseInt(rowsStr);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "Rows must be a whole number.");
+            return null;
+        }
+        
+        HoleFormat holeFormat;
+        switch (mHoleFormat.getSelectedIndex()) {
+            case 0:
+                holeFormat = HoleFormat.OUTLINE;
+                break;
+            case 1:
+                holeFormat = HoleFormat.OUTLINE_TARGET;
+                break;
+            case 2:
+                holeFormat = HoleFormat.SOLID;
+                break;  
+            default:
+                holeFormat = HoleFormat.OUTLINE;
+        }
+        
+        return new StarParameters(starName, 
+                units, 
+                starWidth, 
+                ratio, 
+                holeDiameter, 
+                holeSpacing, 
+                rowSpacing, 
+                layers, 
+                mIsDrawBorder.isSelected(), 
+                mIsDrawInnerBorders.isSelected(), 
+                mIsLabelHoles.isSelected(), 
+                holeFormat.ordinal());
+    }
     
     /**
      * Exports the current star to an xLights configuration.
@@ -497,6 +684,11 @@ public class StarConfiguration extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Save a model to xLights.
+     * @param modelName
+     * @param scale 
+     */
     private void saveToXLights(String modelName, double scale) {
         JFileChooser chooseDirectory = new JFileChooser();
         chooseDirectory.setDialogTitle("Select root of your xLights directory");
@@ -724,10 +916,19 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * Get an instance of the star configured.
+     * @param pts
+     * @return 
+     */
     private PixelStar getConfiguredStar(double pts) {
         return getConfiguredStar(pts, 1.0);
     }
     
+    /**
+     * Get the unit conversion factor for the selected item in the combo.
+     * @return 
+     */
     private double getUnitConversion() {
         double unitConversion = 0.0;
         switch (jComboUnits.getSelectedIndex()) {
@@ -753,85 +954,52 @@ public class StarConfiguration extends javax.swing.JFrame {
      * @return The {@link PixelStar}.
      */
     private PixelStar getConfiguredStar(double pts, double unitConversion) {
-        String starWidthInchesStr = mStarWidthInches.getText();
-        String starRatioStr = mStarRatio.getText();
-        String holeDiameterInchesStr = mHoleDiameterInches.getText();
-        String holeSpacingInchesStr = mHoleSpacingInches.getText();
-        String rowSpacingInchesStr = mRowSpacingInches.getText();
-        String rowsStr = mRows.getText();
-        
-        HoleFormat holeFormat;
-        switch (mHoleFormat.getSelectedIndex()) {
-            case 0:
-                holeFormat = HoleFormat.OUTLINE;
-                break;
-            case 1:
-                holeFormat = HoleFormat.OUTLINE_TARGET;
-                break;
-            case 2:
-                holeFormat = HoleFormat.SOLID;
-                break;  
-            default:
-                holeFormat = HoleFormat.OUTLINE;
-        }
-        
-        double starWidth;
-        double starRatio;
-        double holeDiameter;
-        double holeSpacing;
-        double rowSpacing;
-        int numRows;
-        
-        try {
-            starWidth = Double.parseDouble(starWidthInchesStr) * pts 
-                    * unitConversion;
-        } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, "Width must be a number.");
-            return null;
-        }
-        try {
-            starRatio = Double.parseDouble(starRatioStr);
-        } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, "Ratio must be a number.");
-            return null;
-        }
-        try {
-            holeDiameter = Double.parseDouble(holeDiameterInchesStr) * pts
-                    * unitConversion;
-        } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, 
-                    "Hole diameter must be a number.");
-            return null;
-        }
-        try {
-            holeSpacing = Double.parseDouble(holeSpacingInchesStr) * pts 
-                    * unitConversion;
-        } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, 
-                    "Hole spacing must be a number.");
-            return null;
-        }
-        try {
-            rowSpacing = Double.parseDouble(rowSpacingInchesStr) * pts * 2.0
-                    * unitConversion;
-        } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, 
-                    "Row spacing must be a number.");
-            return null;
-        }
-        try {
-            numRows = Integer.parseInt(rowsStr);
-        } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, "Rows must be a whole.");
-            return null;
-        }
-        
-        
-        PixelStar pixelStar = new PixelStar(starWidth, starRatio, holeDiameter, 
-                holeSpacing, numRows, rowSpacing, mIsDrawBorder.isSelected(),
-                mIsDrawInnerBorders.isSelected(), mIsLabelHoles.isSelected(),
-                holeFormat);
+        StarParameters params = getCurrentConfiguration();
+        PixelStar pixelStar = new PixelStar(
+                params.getStarWidth() * pts * unitConversion, 
+                params.getRatio(),
+                params.getHoleDiameter() * pts * unitConversion, 
+                params.getHoleSpacing() * pts * unitConversion,
+                params.getLayers(),
+                params.getRowSpacing() * pts * unitConversion * 2.0,
+                params.isOuterBorderVisible(),
+                params.areInnerBordersVisible(),
+                params.isLabellingHoles(),
+                PixelStar.getHoleFormatFromInt(params.getHoleType()));
+                
         return pixelStar;
+    }
+    
+    /**
+     * Load the default star.
+     */
+    private void loadDefaultStar() {
+        List<StarParameters> stars = mStarRepository.getStars();
+        if (stars.size() > 0) {
+            StarParameters params = stars.get(0);
+            setParametersToUi(params);
+        }
+    }
+    
+    /**
+     * Copy star parameters to the UI.
+     * @param params 
+     */
+    public void setParametersToUi(StarParameters params) {
+        jModelName.setText(params.getStarName());
+        mStarWidthInches.setText(
+                StarRepository.doubleToString(params.getStarWidth()));
+        mStarRatio.setText(
+                StarRepository.doubleToString(params.getRatio()));
+        mHoleDiameterInches.setText(
+                StarRepository.doubleToString(params.getHoleDiameter()));
+        mHoleSpacingInches.setText(
+                StarRepository.doubleToString(params.getHoleSpacing()));
+        mRows.setText(Integer.toString(params.getLayers()));
+        mIsDrawBorder.setSelected(params.isOuterBorderVisible());
+        mIsDrawInnerBorders.setSelected(params.areInnerBordersVisible());
+        mIsLabelHoles.setSelected(params.isLabellingHoles());
+        mHoleFormat.setSelectedItem(params.getHoleType());
     }
     
     /**
@@ -887,7 +1055,12 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuItem jLoadMenuItem;
+    private javax.swing.JTextField jModelName;
+    private javax.swing.JMenuItem jNewItem;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem jSaveItem;
     private javax.swing.JButton mBuildStar;
     private javax.swing.JTextField mHoleDiameterInches;
     private javax.swing.JComboBox<String> mHoleFormat;

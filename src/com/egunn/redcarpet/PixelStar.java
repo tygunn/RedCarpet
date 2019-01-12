@@ -39,6 +39,23 @@ public class PixelStar {
     }
     
     /**
+     * @param format Hole format as an int.
+     * @return  The {@link HoleFormat} value for the int.
+     */
+    public static HoleFormat getHoleFormatFromInt(int format) {
+        switch (format) {
+            case 0:
+                return HoleFormat.OUTLINE;
+            case 1:
+                return HoleFormat.SOLID;
+            case 2:
+                return HoleFormat.OUTLINE_TARGET;
+            default:
+                return HoleFormat.OUTLINE;
+        }
+    }
+    
+    /**
      * The default size of a hole for a pixel, in inches.
      * This is 12mm.
      */

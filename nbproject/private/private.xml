@@ -5,8 +5,11 @@
         <group>
             <file>file:/D:/Source/RedCarpet/src/com/egunn/redcarpet/StarPreview.java</file>
             <file>file:/D:/Source/RedCarpet/src/com/egunn/redcarpet/StarConfiguration.java</file>
+            <file>file:/D:/Source/RedCarpet/src/com/egunn/redcarpet/StarParameters.java</file>
             <file>file:/D:/Source/RedCarpet/src/com/egunn/redcarpet/PixelStar.java</file>
+            <file>file:/D:/Source/RedCarpet/src/com/egunn/redcarpet/XLightsConfig.java</file>
             <file>file:/D:/Source/RedCarpet/src/com/egunn/redcarpet/Star.java</file>
+            <file>file:/D:/Source/RedCarpet/src/com/egunn/redcarpet/StarRepository.java</file>
         </group>
     </open-files>
 </project-private>
