@@ -102,19 +102,14 @@ public class StarConfiguration extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel1 = new javax.swing.JLabel();
-        mStarWidthInches = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        mStarRatio = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        jHoleDiameterLabel = new javax.swing.JLabel();
         mHoleDiameterInches = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        jHoleSpacingLabel = new javax.swing.JLabel();
         mHoleSpacingInches = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        jRowSpacingLabel = new javax.swing.JLabel();
         mRowSpacingInches = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        jRowsLabel = new javax.swing.JLabel();
         mRows = new javax.swing.JTextField();
         mBuildStar = new javax.swing.JButton();
         mIsDrawBorder = new javax.swing.JCheckBox();
@@ -123,11 +118,16 @@ public class StarConfiguration extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         mNumPixels = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        mHoleFormat = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jComboUnits = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jModelName = new javax.swing.JTextField();
+        jStarWidthLabel = new javax.swing.JLabel();
+        mStarWidthInches = new javax.swing.JTextField();
+        jStarRatioLabel = new javax.swing.JLabel();
+        mStarRatio = new javax.swing.JTextField();
+        mHoleFormat = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jNewItem = new javax.swing.JMenuItem();
@@ -142,143 +142,39 @@ public class StarConfiguration extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(538, 450));
-        setMinimumSize(new java.awt.Dimension(538, 450));
-        setPreferredSize(new java.awt.Dimension(538, 450));
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        setMaximumSize(new java.awt.Dimension(805, 440));
+        setMinimumSize(new java.awt.Dimension(805, 440));
+        setPreferredSize(new java.awt.Dimension(805, 440));
+        setResizable(false);
 
-        jLabel1.setText("Star Width (units):");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        getContentPane().add(jLabel1, gridBagConstraints);
-
-        mStarWidthInches.setText("72");
-        mStarWidthInches.setMaximumSize(new java.awt.Dimension(120, 30));
-        mStarWidthInches.setMinimumSize(new java.awt.Dimension(120, 30));
-        mStarWidthInches.setName(""); // NOI18N
-        mStarWidthInches.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(mStarWidthInches, gridBagConstraints);
-
-        jLabel2.setText("Star Ratio (outer/inner):");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        getContentPane().add(jLabel2, gridBagConstraints);
-
-        mStarRatio.setText("2.0755");
-        mStarRatio.setMaximumSize(new java.awt.Dimension(120, 30));
-        mStarRatio.setMinimumSize(new java.awt.Dimension(120, 30));
-        mStarRatio.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(mStarRatio, gridBagConstraints);
-
-        jLabel3.setText("Hole Diameter (units):");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        getContentPane().add(jLabel3, gridBagConstraints);
+        jHoleDiameterLabel.setText("Hole Diameter (units):");
 
         mHoleDiameterInches.setText("0.472441");
         mHoleDiameterInches.setMaximumSize(new java.awt.Dimension(120, 30));
         mHoleDiameterInches.setMinimumSize(new java.awt.Dimension(120, 30));
         mHoleDiameterInches.setName(""); // NOI18N
         mHoleDiameterInches.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(mHoleDiameterInches, gridBagConstraints);
 
-        jLabel4.setText("Hole Spacing (units):");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        getContentPane().add(jLabel4, gridBagConstraints);
+        jHoleSpacingLabel.setText("Hole Spacing (units):");
 
         mHoleSpacingInches.setText("1.5");
         mHoleSpacingInches.setMaximumSize(new java.awt.Dimension(120, 30));
         mHoleSpacingInches.setMinimumSize(new java.awt.Dimension(120, 30));
         mHoleSpacingInches.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(mHoleSpacingInches, gridBagConstraints);
 
-        jLabel5.setText("Row Spacing (units):");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        getContentPane().add(jLabel5, gridBagConstraints);
+        jRowSpacingLabel.setText("Row Spacing (units):");
 
         mRowSpacingInches.setText("2.0");
         mRowSpacingInches.setMaximumSize(new java.awt.Dimension(120, 30));
         mRowSpacingInches.setMinimumSize(new java.awt.Dimension(120, 30));
         mRowSpacingInches.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(mRowSpacingInches, gridBagConstraints);
 
-        jLabel6.setText("Rows / Layers:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(1, 1, 1, 1);
-        getContentPane().add(jLabel6, gridBagConstraints);
+        jRowsLabel.setText("Rows / Layers:");
 
         mRows.setText("10");
         mRows.setMaximumSize(new java.awt.Dimension(120, 30));
         mRows.setMinimumSize(new java.awt.Dimension(120, 30));
         mRows.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(mRows, gridBagConstraints);
 
         mBuildStar.setText("Build");
         mBuildStar.setToolTipText("");
@@ -287,108 +183,59 @@ public class StarConfiguration extends javax.swing.JFrame {
                 mBuildStarActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.gridheight = 2;
-        getContentPane().add(mBuildStar, gridBagConstraints);
 
         mIsDrawBorder.setSelected(true);
         mIsDrawBorder.setText("Draw Outer Border");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        getContentPane().add(mIsDrawBorder, gridBagConstraints);
+        mIsDrawBorder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mIsDrawBorderActionPerformed(evt);
+            }
+        });
 
         mIsDrawInnerBorders.setSelected(true);
         mIsDrawInnerBorders.setText("Draw Inner Star Outlines");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        getContentPane().add(mIsDrawInnerBorders, gridBagConstraints);
 
         mIsLabelHoles.setSelected(true);
         mIsLabelHoles.setText("Label Holes");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        getContentPane().add(mIsLabelHoles, gridBagConstraints);
 
         jLabel7.setText("Number of Pixels:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jLabel7, gridBagConstraints);
 
         mNumPixels.setText("<undefined>");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(mNumPixels, gridBagConstraints);
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        jPanel1.add(mHoleFormat, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        getContentPane().add(jPanel1, gridBagConstraints);
-
         jLabel8.setText("Units:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jLabel8, gridBagConstraints);
 
         jComboUnits.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inches", "Millimeters", "Centimeters" }));
         jComboUnits.setMinimumSize(new java.awt.Dimension(120, 30));
         jComboUnits.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jComboUnits, gridBagConstraints);
 
         jLabel9.setText("Model Name:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jLabel9, gridBagConstraints);
 
         jModelName.setMaximumSize(null);
         jModelName.setMinimumSize(new java.awt.Dimension(120, 30));
         jModelName.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 3;
-        gridBagConstraints.ipady = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jModelName, gridBagConstraints);
+
+        jStarWidthLabel.setText("Star Width (units):");
+
+        mStarWidthInches.setText("72");
+        mStarWidthInches.setMaximumSize(new java.awt.Dimension(120, 30));
+        mStarWidthInches.setMinimumSize(new java.awt.Dimension(120, 30));
+        mStarWidthInches.setName(""); // NOI18N
+        mStarWidthInches.setPreferredSize(new java.awt.Dimension(120, 30));
+
+        jStarRatioLabel.setText("Star Ratio (outer/inner):");
+
+        mStarRatio.setText("2.0755");
+        mStarRatio.setMaximumSize(new java.awt.Dimension(120, 30));
+        mStarRatio.setMinimumSize(new java.awt.Dimension(120, 30));
+        mStarRatio.setPreferredSize(new java.awt.Dimension(120, 30));
+
+        mHoleFormat.setMaximumSize(new java.awt.Dimension(120, 30));
+        mHoleFormat.setMinimumSize(new java.awt.Dimension(120, 30));
+        mHoleFormat.setPreferredSize(new java.awt.Dimension(120, 30));
+
+        jLabel1.setText("Hole Format:");
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -477,6 +324,128 @@ public class StarConfiguration extends javax.swing.JFrame {
 
         setJMenuBar(menuBar);
 
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(125, 125, 125)
+                                            .addComponent(jLabel9))
+                                        .addComponent(jStarRatioLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(jStarWidthLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jHoleDiameterLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addComponent(jHoleSpacingLabel, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(90, 90, 90)
+                                .addComponent(jRowSpacingLabel)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(mHoleDiameterInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(mRows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mRowSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mHoleSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mStarRatio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mStarWidthInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jComboUnits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jModelName, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(324, 324, 324)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(mNumPixels))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(376, 376, 376)
+                                .addComponent(mBuildStar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(72, 72, 72)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(89, 89, 89)
+                                        .addComponent(jLabel8))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jRowsLabel)
+                                        .addGap(2, 2, 2)))))
+                        .addGap(48, 48, 48)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mIsDrawBorder)
+                    .addComponent(mIsDrawInnerBorders)
+                    .addComponent(mIsLabelHoles)
+                    .addComponent(mHoleFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(136, 136, 136))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jModelName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboUnits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(mIsDrawBorder))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mStarWidthInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mIsDrawInnerBorders)
+                    .addComponent(jStarWidthLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mStarRatio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jStarRatioLabel)
+                    .addComponent(mIsLabelHoles))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mHoleDiameterInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jHoleDiameterLabel)
+                    .addComponent(jLabel1)
+                    .addComponent(mHoleFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mHoleSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jHoleSpacingLabel))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(mRowSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jRowSpacingLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(mRows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jRowsLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(72, 72, 72)))
+                .addComponent(mBuildStar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(mNumPixels))
+                .addContainerGap(55, Short.MAX_VALUE))
+        );
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -519,6 +488,10 @@ public class StarConfiguration extends javax.swing.JFrame {
     private void jNewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNewItemActionPerformed
         newConfiguration();
     }//GEN-LAST:event_jNewItemActionPerformed
+
+    private void mIsDrawBorderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mIsDrawBorderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mIsDrawBorderActionPerformed
 
     /**
      * Create a new configuration; basically just empty out the model name so
@@ -1047,12 +1020,9 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JMenuItem jExportAsEps;
     private javax.swing.JMenuItem jExportAsSvg;
     private javax.swing.JMenuItem jExportToXLights;
+    private javax.swing.JLabel jHoleDiameterLabel;
+    private javax.swing.JLabel jHoleSpacingLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -1060,7 +1030,11 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JTextField jModelName;
     private javax.swing.JMenuItem jNewItem;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jRowSpacingLabel;
+    private javax.swing.JLabel jRowsLabel;
     private javax.swing.JMenuItem jSaveItem;
+    private javax.swing.JLabel jStarRatioLabel;
+    private javax.swing.JLabel jStarWidthLabel;
     private javax.swing.JButton mBuildStar;
     private javax.swing.JTextField mHoleDiameterInches;
     private javax.swing.JComboBox<String> mHoleFormat;
