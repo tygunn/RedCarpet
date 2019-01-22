@@ -238,5 +238,9 @@ public class PixelStar {
     public List<StarLayer> getLayers() {
         return mStarLayers;
     }
+    
+    public Star getBorder() {
+        return mBorder;
+    }
 }
 

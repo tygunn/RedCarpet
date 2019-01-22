@@ -136,6 +136,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         jExportAsEps = new javax.swing.JMenuItem();
         jExportAsSvg = new javax.swing.JMenuItem();
         jExportToXLights = new javax.swing.JMenuItem();
+        jExportToDxf = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
@@ -287,6 +288,14 @@ public class StarConfiguration extends javax.swing.JFrame {
             }
         });
         fileMenu.add(jExportToXLights);
+
+        jExportToDxf.setText("Export to DXF");
+        jExportToDxf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jExportToDxfActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jExportToDxf);
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -493,6 +502,10 @@ public class StarConfiguration extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_mIsDrawBorderActionPerformed
 
+    private void jExportToDxfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportToDxfActionPerformed
+        exportToDxf();
+    }//GEN-LAST:event_jExportToDxfActionPerformed
+
     /**
      * Create a new configuration; basically just empty out the model name so
      * the user can work on the current one but as a new star.
@@ -623,6 +636,33 @@ public class StarConfiguration extends javax.swing.JFrame {
                 mIsDrawInnerBorders.isSelected(), 
                 mIsLabelHoles.isSelected(), 
                 holeFormat.ordinal());
+    }
+    
+    private void exportToDxf() {
+        if (isCalculating) {
+            return;
+        }
+        isCalculating = true;
+        mStarFuture = new CompletableFuture<>();
+        mExecutorService.submit(() -> {
+            PixelStar star = getConfiguredStar(
+                    1.0 /* no scaling */,
+                    1.0 /* inches */);
+
+            if (star == null) {
+                mStarFuture.complete(null);
+                return;
+            }
+            mStarFuture.complete(star);   
+        });
+        
+        mStarFuture.whenComplete((star, u) -> {
+            
+            DxfExport export = new DxfExport(star);
+            export.writeToFile("star.dxf");
+
+            mNumPixels.setText(("" + star.getNumberHoles()));
+        });
     }
     
     /**
@@ -1019,6 +1059,7 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboUnits;
     private javax.swing.JMenuItem jExportAsEps;
     private javax.swing.JMenuItem jExportAsSvg;
+    private javax.swing.JMenuItem jExportToDxf;
     private javax.swing.JMenuItem jExportToXLights;
     private javax.swing.JLabel jHoleDiameterLabel;
     private javax.swing.JLabel jHoleSpacingLabel;
