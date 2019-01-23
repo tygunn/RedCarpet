@@ -662,6 +662,7 @@ public class StarConfiguration extends javax.swing.JFrame {
             export.writeToFile("star.dxf");
 
             mNumPixels.setText(("" + star.getNumberHoles()));
+            isCalculating = false;
         });
     }
     
@@ -694,6 +695,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         if (result == JOptionPane.OK_OPTION) {
             saveToXLights(modelNameField.getText(), 
                     Double.parseDouble(modelScaleField.getText()));
+            isCalculating = false;
         }
     }
     
@@ -766,6 +768,7 @@ public class StarConfiguration extends javax.swing.JFrame {
             }
 
             mNumPixels.setText(("" + star.getNumberHoles()));
+            isCalculating = false;
         });
     }
     
@@ -817,6 +820,7 @@ public class StarConfiguration extends javax.swing.JFrame {
             
             mNumPixels.setText(("" + star.getNumberHoles()));
             System.out.println("Done writing star");
+            isCalculating = false;
         });
     }
     
@@ -859,6 +863,7 @@ public class StarConfiguration extends javax.swing.JFrame {
             }
 
             mNumPixels.setText(("" + star.getNumberHoles()));
+            isCalculating = false;
         });
     }
     
