@@ -659,7 +659,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         mStarFuture.whenComplete((star, u) -> {
             
             DxfExport export = new DxfExport(star);
-            export.writeToFile("star.dxf");
+            String fileName = jModelName.getText() + ".dxf";
+            export.writeToFile(fileName);
 
             mNumPixels.setText(("" + star.getNumberHoles()));
             isCalculating = false;
@@ -756,7 +757,8 @@ public class StarConfiguration extends javax.swing.JFrame {
                     new PageSize(star.getWidth(), 
                         star.getHeight()));
             try {
-                FileOutputStream stream = new FileOutputStream("star.svg");
+                String fileName = jModelName.getText() + ".svg";
+                FileOutputStream stream = new FileOutputStream(fileName);
                 doc.writeTo(stream);
                 stream.close();
             } catch (FileNotFoundException ex) {
@@ -807,7 +809,8 @@ public class StarConfiguration extends javax.swing.JFrame {
                     new PageSize(star.getWidth(), 
                         star.getHeight()));
             try {
-                FileOutputStream stream = new FileOutputStream("star.eps");
+                String fileName = jModelName.getText() + ".eps";
+                FileOutputStream stream = new FileOutputStream(fileName);
                 doc.writeTo(stream);
                 stream.close();
             } catch (FileNotFoundException ex) {
@@ -853,7 +856,8 @@ public class StarConfiguration extends javax.swing.JFrame {
                     new PageSize(star.getWidth(), 
                         star.getHeight()));
             try {
-                doc.writeTo(new FileOutputStream("star.pdf"));
+                String fileName = jModelName.getText() + ".pdf";
+                doc.writeTo(new FileOutputStream(fileName));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(
                         RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
@@ -901,7 +905,8 @@ public class StarConfiguration extends javax.swing.JFrame {
             star.draw(cg);
             mNumPixels.setText(("" + star.getNumberHoles()));
             try {
-                if (ImageIO.write(bImg, "png", new File("star.png")))
+                String fileName = jModelName.getText() + ".png";
+                if (ImageIO.write(bImg, "png", new File(fileName)))
                 {
                     System.out.println("-- saved");
                 }
