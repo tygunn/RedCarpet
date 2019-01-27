@@ -242,5 +242,9 @@ public class PixelStar {
     public Star getBorder() {
         return mBorder;
     }
+    
+    public double getRatio() {
+        return mPentagonRatio;
+    }
 }
 

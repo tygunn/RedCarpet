@@ -128,6 +128,8 @@ public class StarConfiguration extends javax.swing.JFrame {
         mStarRatio = new javax.swing.JTextField();
         mHoleFormat = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jStarStats = new javax.swing.JTextArea();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jNewItem = new javax.swing.JMenuItem();
@@ -136,6 +138,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         jExportAsEps = new javax.swing.JMenuItem();
         jExportAsSvg = new javax.swing.JMenuItem();
         jExportToXLights = new javax.swing.JMenuItem();
+        jExportAsXLightsStarModel = new javax.swing.JMenuItem();
         jExportToDxf = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
@@ -143,9 +146,9 @@ public class StarConfiguration extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(805, 440));
-        setMinimumSize(new java.awt.Dimension(805, 440));
-        setPreferredSize(new java.awt.Dimension(805, 440));
+        setMaximumSize(new java.awt.Dimension(805, 680));
+        setMinimumSize(new java.awt.Dimension(805, 680));
+        setPreferredSize(new java.awt.Dimension(805, 680));
         setResizable(false);
 
         jHoleDiameterLabel.setText("Hole Diameter (units):");
@@ -238,6 +241,11 @@ public class StarConfiguration extends javax.swing.JFrame {
 
         jLabel1.setText("Hole Format:");
 
+        jStarStats.setEditable(false);
+        jStarStats.setColumns(20);
+        jStarStats.setRows(5);
+        jScrollPane1.setViewportView(jStarStats);
+
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
 
@@ -289,6 +297,14 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
         fileMenu.add(jExportToXLights);
 
+        jExportAsXLightsStarModel.setText("Export as xLights StarModel");
+        jExportAsXLightsStarModel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jExportAsXLightsStarModelActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jExportAsXLightsStarModel);
+
         jExportToDxf.setText("Export to DXF");
         jExportToDxf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -337,8 +353,23 @@ public class StarConfiguration extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(72, 72, 72)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(89, 89, 89)
+                                .addComponent(jLabel8))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRowsLabel)
+                                .addGap(2, 2, 2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(296, 296, 296)
+                                .addComponent(mBuildStar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -369,36 +400,25 @@ public class StarConfiguration extends javax.swing.JFrame {
                                     .addComponent(mStarWidthInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jComboUnits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jModelName, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(324, 324, 324)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(mNumPixels))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(376, 376, 376)
-                                .addComponent(mBuildStar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(89, 89, 89)
-                                        .addComponent(jLabel8))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jRowsLabel)
-                                        .addGap(2, 2, 2)))))
-                        .addGap(48, 48, 48)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(mIsDrawBorder)
                     .addComponent(mIsDrawInnerBorders)
                     .addComponent(mIsLabelHoles)
                     .addComponent(mHoleFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(136, 136, 136))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(316, 316, 316)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mNumPixels))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 752, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,17 +462,18 @@ public class StarConfiguration extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(mRows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jRowsLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addComponent(mBuildStar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(mNumPixels)))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(72, 72, 72)))
-                .addComponent(mBuildStar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(mNumPixels))
-                .addContainerGap(55, Short.MAX_VALUE))
+                        .addGap(65, 65, 65)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
 
         pack();
@@ -505,6 +526,10 @@ public class StarConfiguration extends javax.swing.JFrame {
     private void jExportToDxfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportToDxfActionPerformed
         exportToDxf();
     }//GEN-LAST:event_jExportToDxfActionPerformed
+
+    private void jExportAsXLightsStarModelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportAsXLightsStarModelActionPerformed
+        exportAsXLightsStarModel();
+    }//GEN-LAST:event_jExportAsXLightsStarModelActionPerformed
 
     /**
      * Create a new configuration; basically just empty out the model name so
@@ -871,6 +896,13 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
     }
     
+    private void exportAsXLightsStarModel() {
+        PixelStar star = getConfiguredStar(1.0);
+        XLightsStarModel model = new XLightsStarModel(star, 
+                jModelName.getText());
+        model.saveFile(jModelName.getText() + ".xmodel");      
+    }
+    
     /**
      * Output the star to a file and also show it in a preview panel.
      */
@@ -904,6 +936,7 @@ public class StarConfiguration extends javax.swing.JFrame {
             cg.setColor(Color.black);
             star.draw(cg);
             mNumPixels.setText(("" + star.getNumberHoles()));
+            jStarStats.setText(getStarStars(star));
             try {
                 String fileName = jModelName.getText() + ".png";
                 if (ImageIO.write(bImg, "png", new File(fileName)))
@@ -937,6 +970,24 @@ public class StarConfiguration extends javax.swing.JFrame {
 
             isCalculating = false;
         });
+    }
+    
+    private String getStarStars(PixelStar star) {
+        StringBuffer stats = new StringBuffer();
+        
+        stats.append("Layers: ");
+        stats.append(star.getLayers().size());
+        stats.append(System.lineSeparator());
+        int ix = 1;
+        for (StarLayer layer : star.getLayers()) {
+            stats.append("Layer " + ix);
+            stats.append(": ");
+            stats.append(layer.getHolesList().size());
+            stats.append(" pixels");
+            stats.append(System.lineSeparator());
+            ix++;
+        }
+        return stats.toString();
     }
     
     /**
@@ -1069,6 +1120,7 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboUnits;
     private javax.swing.JMenuItem jExportAsEps;
     private javax.swing.JMenuItem jExportAsSvg;
+    private javax.swing.JMenuItem jExportAsXLightsStarModel;
     private javax.swing.JMenuItem jExportToDxf;
     private javax.swing.JMenuItem jExportToXLights;
     private javax.swing.JLabel jHoleDiameterLabel;
@@ -1084,7 +1136,9 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JLabel jRowSpacingLabel;
     private javax.swing.JLabel jRowsLabel;
     private javax.swing.JMenuItem jSaveItem;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jStarRatioLabel;
+    private javax.swing.JTextArea jStarStats;
     private javax.swing.JLabel jStarWidthLabel;
     private javax.swing.JButton mBuildStar;
     private javax.swing.JTextField mHoleDiameterInches;
