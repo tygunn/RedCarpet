@@ -497,12 +497,7 @@ public class StarLayer {
         sb.append(getHeight());
         
         sb.append(", sideLength=");
-        sb.append(Point2D.distance(
-                mStar.getVertices().get(0).getX(), 
-                mStar.getVertices().get(0).getY(), 
-                mStar.getVertices().get(1).getX(),
-                mStar.getVertices().get(1).getY()) / PixelStar.PTS_PER_INCH);
-        
+               
         mStar.getVertices().get(1);
         
         sb.append("]");

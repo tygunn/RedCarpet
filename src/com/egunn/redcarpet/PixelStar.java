@@ -19,9 +19,15 @@ package com.egunn.redcarpet;
 import java.awt.BasicStroke;
 import static java.awt.BasicStroke.CAP_BUTT;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +35,8 @@ import java.util.List;
  * Class representing a pixel star with layers of pixels.
  * @author tyler
  */
-public class PixelStar {
-    
+public class PixelStar implements Printable {
+
     public enum HoleFormat {
         OUTLINE, // Holes are drawn as outlines.
         SOLID, // Holes are solid black.
@@ -60,12 +66,7 @@ public class PixelStar {
      * This is 12mm.
      */
     public static final double PIXEL_HOLE_IN_INCHES = 0.472441;
-    
-    /**
-     * The typical number of Java points per inch.
-     */
-    public static final double PTS_PER_INCH = 72.0;
-    
+        
     /**
      * Desired width of the pixel star.
      */
@@ -118,6 +119,11 @@ public class PixelStar {
     private final HoleFormat mHoleFormat;
     
     /**
+     * Points per inch.
+     */
+    private final int mResolution;
+
+    /**
      * The border of the star.
      */
     private Star mBorder;
@@ -132,10 +138,31 @@ public class PixelStar {
      */
     private int mNumHoles;
     
+    /**
+     * {@code true} if the star is being printed.
+     */
+    private boolean mIsPrinting = false;
+
+    /**
+     * Total pages (for printing).
+     */
+    private int mTotalPages = 0;
+    
+    /**
+     * Page offsets used for printing.
+     */
+    private List<Double> mPageOffsetsX = new ArrayList<>();
+    
+    /**
+     * Page offsets used for printing.
+     */
+    private List<Double> mPageOffsetsY = new ArrayList<>();
+    
+    
     public PixelStar(double width, double ratio, double holeDiameter, 
             double holeSpacing, int rows, double rowSpacing,
             boolean isDrawingBorder, boolean isDrawingStarOutlines,
-            boolean isLabelingHoles, HoleFormat holeFormat) {
+            boolean isLabelingHoles, HoleFormat holeFormat, int resolution) {
         mStarLayers = new ArrayList<StarLayer>();
         mWidth = width;
         mPentagonRatio = ratio;
@@ -147,6 +174,7 @@ public class PixelStar {
         mIsDrawingInnerOutlines = isDrawingStarOutlines;
         mIsLabelingHoles = isLabelingHoles;
         mHoleFormat = holeFormat;
+        mResolution = resolution;
         
         buildStar();
     }
@@ -156,9 +184,9 @@ public class PixelStar {
      * @param g 
      */
     public void draw(Graphics2D g) {
+        System.out.println("Drawing");
         g.setColor(Color.black);
         g.setStroke(new BasicStroke(1.0f, CAP_BUTT, BasicStroke.JOIN_MITER));
-        
         // Draw the outline of the star.
         if (mIsDrawingBorder) {
             Path2D starPath = mBorder.getPath();
@@ -172,11 +200,9 @@ public class PixelStar {
         }
         
         // Draw a scale ruler.
-        /*String num = "1 inch";
-                g.drawString(num, 10.0f, 10.0f);
-        g.drawLine(10, 10, 
-                (int) java.awt.Toolkit.getDefaultToolkit().getScreenResolution() 
-                        + 10, 10);*/
+        //String num = "1 inch";
+        //        g.drawString(num, 10.0f, 10.0f);
+        //g.drawLine(10, 10, mResolution+ 10, 10);
     }
     
     private void buildStar() {
@@ -245,6 +271,72 @@ public class PixelStar {
     
     public double getRatio() {
         return mPentagonRatio;
+    }
+    
+    /**
+     * Prints the current star spanning multiple pages.
+     * @param graphics
+     * @param pageFormat
+     * @param pageIndex
+     * @return
+     * @throws PrinterException 
+     */
+    @Override
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) 
+            throws PrinterException {
+        Graphics2D g2d = (Graphics2D) graphics;
+        
+        if (!mIsPrinting) {
+            mIsPrinting = true;
+            int pagesWidth = (int) Math.ceil(getWidth() 
+                    / pageFormat.getImageableWidth());
+            int pagesHigh = (int) Math.ceil(getHeight()
+                    / pageFormat.getImageableHeight());
+            mTotalPages = pagesWidth * pagesHigh;
+            int curX = 0;
+            int curY = 0;
+            double pageWidth = pageFormat.getImageableWidth();
+            double pageHeight = pageFormat.getImageableHeight();
+            for (int ix = 0; ix < mTotalPages; ix++) {
+                mPageOffsetsX.add(-1.0 * pageWidth * (double) curX 
+                        + pageFormat.getImageableX());
+                mPageOffsetsY.add(-1.0 * pageHeight * (double) curY
+                        + pageFormat.getImageableY());
+                curX = (curX + 1) % pagesWidth;
+                if (curX == 0) {
+                    curY = (curY + 1) % pagesHigh;
+                }
+            }
+            
+            System.out.println("Imageable X: "+ pageFormat.getImageableX());
+            System.out.println("Page Width: " + pageFormat.getWidth());
+            System.out.println("Imagable Width: "+ pageFormat.getImageableWidth());
+            System.out.println("Imageable Y: "+ pageFormat.getImageableY());
+            System.out.println("Page Height: " + pageFormat.getHeight());
+            System.out.println("Imagable Height: "+ pageFormat.getImageableHeight());
+
+        }
+        // We have only one page, and 'page'
+        // is zero-based
+        if (pageIndex >= mTotalPages) {
+            mIsPrinting = false;
+            return NO_SUCH_PAGE;
+        }
+        int imgX = (int)Math.round(pageFormat.getImageableX());
+        int imgY = (int)Math.round(pageFormat.getImageableY());
+               
+        // Translate the star on the page.
+        g2d.translate(mPageOffsetsX.get(pageIndex), 
+                mPageOffsetsY.get(pageIndex));
+        
+        //g2d.drawLine(0, 0, 0, 100);
+        //g2d.drawLine(0, 0, 100, 0);
+        //g2d.drawLine((int)pageFormat.getImageableWidth(), 0, (int)pageFormat.getImageableWidth(), 100);
+        //g2d.drawLine((int)pageFormat.getImageableWidth()-100, 0, (int)pageFormat.getImageableWidth(), 0);
+        
+        draw(g2d);
+
+        return PAGE_EXISTS;
     }
 }
 

@@ -31,6 +31,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DragSource;
 import java.awt.image.BufferedImage;
+import java.awt.print.Book;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -140,6 +143,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         jExportToXLights = new javax.swing.JMenuItem();
         jExportAsXLightsStarModel = new javax.swing.JMenuItem();
         jExportToDxf = new javax.swing.JMenuItem();
+        jPrintMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
@@ -312,6 +316,14 @@ public class StarConfiguration extends javax.swing.JFrame {
             }
         });
         fileMenu.add(jExportToDxf);
+
+        jPrintMenuItem.setText("Print...");
+        jPrintMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPrintMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jPrintMenuItem);
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -530,6 +542,10 @@ public class StarConfiguration extends javax.swing.JFrame {
     private void jExportAsXLightsStarModelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jExportAsXLightsStarModelActionPerformed
         exportAsXLightsStarModel();
     }//GEN-LAST:event_jExportAsXLightsStarModelActionPerformed
+
+    private void jPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPrintMenuItemActionPerformed
+        printStar();
+    }//GEN-LAST:event_jPrintMenuItemActionPerformed
 
     /**
      * Create a new configuration; basically just empty out the model name so
@@ -788,10 +804,10 @@ public class StarConfiguration extends javax.swing.JFrame {
                 stream.close();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(
-                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+                        StarConfiguration.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(
-                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+                        StarConfiguration.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             mNumPixels.setText(("" + star.getNumberHoles()));
@@ -840,10 +856,10 @@ public class StarConfiguration extends javax.swing.JFrame {
                 stream.close();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(
-                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+                        StarConfiguration.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(
-                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+                        StarConfiguration.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             mNumPixels.setText(("" + star.getNumberHoles()));
@@ -885,10 +901,12 @@ public class StarConfiguration extends javax.swing.JFrame {
                 doc.writeTo(new FileOutputStream(fileName));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(
-                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+                        StarConfiguration.class.getName()).log(
+                                Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(
-                        RedCarpet.class.getName()).log(Level.SEVERE, null, ex);
+                        StarConfiguration.class.getName()).log(
+                                Level.SEVERE, null, ex);
             }
 
             mNumPixels.setText(("" + star.getNumberHoles()));
@@ -972,6 +990,70 @@ public class StarConfiguration extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * Print the star
+     */
+    private void printStar() {
+        // In the future, there will be a star.
+        if (isCalculating) {
+            return;
+        }
+        isCalculating = true;
+        
+        mStarFuture = new CompletableFuture<>();
+        mExecutorService.submit(() -> {
+            PixelStar star = getConfiguredStar(
+                    72 /* default print resolution */,
+                    getUnitConversion());
+            if (star == null) {
+                return;
+            }
+
+            mStarFuture.complete(star);   
+        });
+        
+        mStarFuture.whenComplete((star, u) -> {
+            
+            BufferedImage bImg = new BufferedImage(star.getWidth(), 
+                    star.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics2D cg = bImg.createGraphics();
+            cg.setBackground(Color.white);
+            cg.setColor(Color.white);
+            cg.fillRect(0, 0, bImg.getWidth(), bImg.getHeight());
+            cg.setColor(Color.black);
+            star.draw(cg);
+            
+            //--- Create a new PrinterJob object
+            PrinterJob printJob = PrinterJob.getPrinterJob();
+
+            PageFormat documentPageFormat = new PageFormat();
+            documentPageFormat.setOrientation(PageFormat.PORTRAIT);
+            //--- Tell the printJob to use the book as the pageable object
+            printJob.setPrintable(star);
+
+
+            if (printJob.printDialog()) {
+                try {
+                    printJob.print();
+                } catch (Exception PrintException) {
+                    PrintException.printStackTrace();
+                }
+            } else {
+                return;
+            }
+
+            mNumPixels.setText(("" + star.getNumberHoles()));
+            jStarStats.setText(getStarStars(star));
+            
+            isCalculating = false;
+        });
+    }
+    
+    /**
+     * Get some stats on the star for informational purposes.
+     * @param star
+     * @return 
+     */
     private String getStarStars(PixelStar star) {
         StringBuffer stats = new StringBuffer();
         
@@ -1039,7 +1121,8 @@ public class StarConfiguration extends javax.swing.JFrame {
                 params.isOuterBorderVisible(),
                 params.areInnerBordersVisible(),
                 params.isLabellingHoles(),
-                PixelStar.getHoleFormatFromInt(params.getHoleType()));
+                PixelStar.getHoleFormatFromInt(params.getHoleType()),
+                (int) pts);
                 
         return pixelStar;
     }
@@ -1133,6 +1216,7 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JTextField jModelName;
     private javax.swing.JMenuItem jNewItem;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem jPrintMenuItem;
     private javax.swing.JLabel jRowSpacingLabel;
     private javax.swing.JLabel jRowsLabel;
     private javax.swing.JMenuItem jSaveItem;
