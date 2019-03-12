@@ -200,20 +200,24 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="mHoleDiameterInches" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="mHoleSpacingInches" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jHoleSpacingLabel1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="mRowSpacingInches" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="mRows" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="mRowSpacingInches" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="mHoleSpacingInches" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="mHoleDiameterInches" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="mStarRatio" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="mStarWidthInches" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jComboUnits" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jModelName" alignment="0" min="-2" pref="277" max="-2" attributes="0"/>
+                                  <Component id="mRows" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -226,6 +230,8 @@
                   <Component id="mIsDrawInnerBorders" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="mIsLabelHoles" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="mHoleFormat" alignment="0" min="-2" pref="143" max="-2" attributes="0"/>
+                  <Component id="mPixelBodyDiameter" min="-2" max="-2" attributes="0"/>
+                  <Component id="mIsShowPixelBodies" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
           </Group>
@@ -276,13 +282,14 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="mHoleDiameterInches" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jHoleDiameterLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="mHoleFormat" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="mIsShowPixelBodies" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="mHoleSpacingInches" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jHoleSpacingLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="mPixelBodyDiameter" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jHoleSpacingLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -290,6 +297,8 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="mRowSpacingInches" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jRowSpacingLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="mHoleFormat" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -560,5 +569,36 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JTextField" name="mPixelBodyDiameter">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0.759"/>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[120, 30]"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[120, 30]"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[120, 30]"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mPixelBodyDiameterActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jHoleSpacingLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pixed Body Diameter (units):"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="mIsShowPixelBodies">
+      <Properties>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="Show Pixel Bodies"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mIsShowPixelBodiesActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

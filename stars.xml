@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Stars>
-<Star drawInnerBorders="true" drawOuterBorder="true" holeDiameter="0.472441" holeSpacing="1.500000" holeStyle="0" id="48in" labelHoles="true" layers="10" ratio="2.075500" rowSpacing="2.000000" units="Inches" width="48.000000"/>
-  <Star drawInnerBorders="true" drawOuterBorder="true" holeDiameter="0.472441" holeSpacing="1.500000" holeStyle="0" id="36in" labelHoles="true" layers="7" ratio="2.075500" rowSpacing="2.000000" units="Inches" width="36.000000"/>
-  <Star drawInnerBorders="true" drawOuterBorder="true" holeDiameter="0.472441" holeSpacing="1.500000" holeStyle="0" id="24in" labelHoles="true" layers="4" ratio="2.075500" rowSpacing="2.000000" units="Inches" width="24.000000"/>
+<Star drawInnerBorders="true" drawOuterBorder="true" holeDiameter="0.472441" holeSpacing="1.500000" holeStyle="0" id="48in" labelHoles="true" layers="10" pixelBodyDiameter="0.759000" ratio="2.075500" rowSpacing="2.000000" showPixelBodies="false" units="Inches" width="48.000000"/>
+  <Star drawInnerBorders="true" drawOuterBorder="true" holeDiameter="0.472441" holeSpacing="1.500000" holeStyle="0" id="36in" labelHoles="true" layers="7" pixelBodyDiameter="0.759000" ratio="2.075500" rowSpacing="2.000000" showPixelBodies="false" units="Inches" width="36.000000"/>
+  <Star drawInnerBorders="true" drawOuterBorder="true" holeDiameter="0.472441" holeSpacing="1.500000" holeStyle="0" id="24in" labelHoles="true" layers="4" pixelBodyDiameter="0.759000" ratio="2.075500" rowSpacing="2.000000" showPixelBodies="false" units="Inches" width="24.000000"/>
+<Star drawInnerBorders="true" drawOuterBorder="true" holeDiameter="0.472441" holeSpacing="1.500000" holeStyle="0" id="24in - small center" labelHoles="true" layers="4" pixelBodyDiameter="0.759000" ratio="2.075500" rowSpacing="2.500000" showPixelBodies="false" units="Inches" width="24.000000"/>
+  <Star drawInnerBorders="true" drawOuterBorder="true" holeDiameter="0.472441" holeSpacing="1.500000" holeStyle="0" id="48in - small center" labelHoles="true" layers="10" pixelBodyDiameter="0.759000" ratio="2.075500" rowSpacing="2.200000" showPixelBodies="false" units="Inches" width="48.000000"/>
+<Star drawInnerBorders="true" drawOuterBorder="true" holeDiameter="0.472441" holeSpacing="1.200000" holeStyle="0" id="8in" labelHoles="true" layers="1" pixelBodyDiameter="0.759000" ratio="2.075500" rowSpacing="1.500000" showPixelBodies="true" units="Inches" width="12.000000"/>
 </Stars>

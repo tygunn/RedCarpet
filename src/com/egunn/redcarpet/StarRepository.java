@@ -60,12 +60,14 @@ public class StarRepository {
     private final static String WIDTH_ATTR = "width";
     private final static String RATIO_ATTR = "ratio";
     private final static String HOLE_DIAMETER_ATTR = "holeDiameter";
+    private final static String PIXEL_BODY_DIAMETER_ATTR = "pixelBodyDiameter";
     private final static String HOLE_SPACING_ATTR = "holeSpacing";
     private final static String ROW_SPACING_ATTR = "rowSpacing";
     private final static String LAYERS_ATTR = "layers";
     private final static String DRAW_OUTER_BORDER_ATTR = "drawOuterBorder";
     private final static String DRAW_INNER_BORDERS_ATTR = "drawInnerBorders";
     private final static String LABEL_HOLES_ATTR = "labelHoles";
+    private final static String SHOW_PIXEL_BODIES_ATTR = "showPixelBodies";
     private final static String HOLE_STYLE_ATTR = "holeStyle";
     
     /**
@@ -212,6 +214,8 @@ public class StarRepository {
                 doubleToString(starParams.getRatio()));
         existingStar.setAttribute(HOLE_DIAMETER_ATTR, 
                 doubleToString(starParams.getHoleDiameter()));
+        existingStar.setAttribute(PIXEL_BODY_DIAMETER_ATTR, 
+                doubleToString(starParams.getPixelBodyDiameter()));
         existingStar.setAttribute(HOLE_SPACING_ATTR, 
                 doubleToString(starParams.getHoleSpacing()));
         existingStar.setAttribute(ROW_SPACING_ATTR, 
@@ -223,6 +227,8 @@ public class StarRepository {
                 Boolean.toString(starParams.areInnerBordersVisible()));
         existingStar.setAttribute(LABEL_HOLES_ATTR,
                 Boolean.toString(starParams.isLabellingHoles()));
+        existingStar.setAttribute(SHOW_PIXEL_BODIES_ATTR,
+                Boolean.toString(starParams.isShowingPixelBodies()));
         existingStar.setAttribute(HOLE_STYLE_ATTR,
                 Integer.toString(starParams.getHoleType()));
         
@@ -256,8 +262,16 @@ public class StarRepository {
                 WIDTH_ATTR));
         double ratio = Double.parseDouble(starElement.getAttribute(
                 RATIO_ATTR));
-        double holeDiameter  = Double.parseDouble(starElement.getAttribute(
+        double holeDiameter = Double.parseDouble(starElement.getAttribute(
                 HOLE_DIAMETER_ATTR));
+        double pixelBodyDiameter;
+        try {
+            pixelBodyDiameter = Double.parseDouble(starElement.getAttribute(
+                PIXEL_BODY_DIAMETER_ATTR));
+        } catch (NumberFormatException nfe) {
+            pixelBodyDiameter = 0.0;
+        }
+        
         double holeSpacing = Double.parseDouble(starElement.getAttribute(
                 HOLE_SPACING_ATTR));
         double rowSpacing = Double.parseDouble(starElement.getAttribute(
@@ -269,6 +283,8 @@ public class StarRepository {
                 starElement.getAttribute(DRAW_INNER_BORDERS_ATTR));
         boolean isLabellingHoles = Boolean.parseBoolean(
                 starElement.getAttribute(LABEL_HOLES_ATTR));
+        boolean isShowingPixelBodies = Boolean.parseBoolean(
+                starElement.getAttribute(SHOW_PIXEL_BODIES_ATTR));
         int holeType = Integer.parseInt(
                 starElement.getAttribute(HOLE_STYLE_ATTR));
                 
@@ -277,12 +293,14 @@ public class StarRepository {
                 starWidth,
                 ratio, 
                 holeDiameter, 
+                pixelBodyDiameter,
                 holeSpacing, 
                 rowSpacing, 
                 layers, 
                 isOuterBorderVisible, 
                 isInnerBorderVisible, 
                 isLabellingHoles,
+                isShowingPixelBodies,
                 holeType);
         return star;
     }

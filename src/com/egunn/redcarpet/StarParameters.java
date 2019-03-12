@@ -28,12 +28,14 @@ public class StarParameters {
     private double mStarWidth;
     private double mRatio;
     private double mHoleDiameter;
+    private double mPixelBodyDiameter;
     private double mHoleSpacing;
     private double mRowSpacing;
     private int mLayers;
     private boolean mIsOuterBorderVisible;
     private boolean mAreInnerBordersVisible;
     private boolean mIsLabellingHoles;
+    private boolean mIsShowingPixelBodies;
     private int mHoleType;
     
     public StarParameters(
@@ -41,25 +43,29 @@ public class StarParameters {
             String units, 
             double starWidth,
             double ratio,
-            double holeDiameter, 
+            double holeDiameter,
+            double pixelBodyDiameter,
             double holeSpacing, 
             double rowSpacing,
             int layers, 
             boolean isOuterBorderVisible,
             boolean areInnerBordersVisible, 
             boolean isLabellingHoles,
+            boolean isShowingPixelBodies,
             int holeType) {
         mStarName = starName;
         mUnits = units;
         mStarWidth = starWidth;
         mRatio = ratio;
         mHoleDiameter = holeDiameter;
+        mPixelBodyDiameter = pixelBodyDiameter;
         mHoleSpacing = holeSpacing;
         mRowSpacing = rowSpacing;
         mLayers = layers;
         mIsOuterBorderVisible = isOuterBorderVisible;
         mAreInnerBordersVisible = areInnerBordersVisible;
         mIsLabellingHoles = isLabellingHoles;
+        mIsShowingPixelBodies = isShowingPixelBodies;
         mHoleType = holeType;
     }
     
@@ -131,6 +137,20 @@ public class StarParameters {
      */
     public void setHoleDiameter(double mHoleDiameter) {
         this.mHoleDiameter = mHoleDiameter;
+    }
+    
+    /**
+     * @return the pixel body diameter.
+     */
+    public double getPixelBodyDiameter() {
+        return mPixelBodyDiameter;
+    }
+    
+    /**
+     * @param pixelBodyDiameter the new body diameter.
+     */
+    public void setPixelBodyDiameter(double pixelBodyDiameter) {
+        this.mPixelBodyDiameter = pixelBodyDiameter;
     }
 
     /**
@@ -215,6 +235,17 @@ public class StarParameters {
      */
     public void setIsLabellingHoles(boolean mIsLabellingHoles) {
         this.mIsLabellingHoles = mIsLabellingHoles;
+    }
+    
+    /**
+     * @return {@code true} if pixel bodies are shown.
+     */
+    public boolean isShowingPixelBodies() {
+        return mIsShowingPixelBodies;
+    }
+    
+    public void setIsShowingPixelBodies(boolean isShowingPixelBodies) {
+        mIsShowingPixelBodies = isShowingPixelBodies;  
     }
 
     /**

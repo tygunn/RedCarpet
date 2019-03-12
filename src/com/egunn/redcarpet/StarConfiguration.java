@@ -133,6 +133,9 @@ public class StarConfiguration extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jStarStats = new javax.swing.JTextArea();
+        mPixelBodyDiameter = new javax.swing.JTextField();
+        jHoleSpacingLabel1 = new javax.swing.JLabel();
+        mIsShowPixelBodies = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         jNewItem = new javax.swing.JMenuItem();
@@ -249,6 +252,26 @@ public class StarConfiguration extends javax.swing.JFrame {
         jStarStats.setColumns(20);
         jStarStats.setRows(5);
         jScrollPane1.setViewportView(jStarStats);
+
+        mPixelBodyDiameter.setText("0.759");
+        mPixelBodyDiameter.setMaximumSize(new java.awt.Dimension(120, 30));
+        mPixelBodyDiameter.setMinimumSize(new java.awt.Dimension(120, 30));
+        mPixelBodyDiameter.setPreferredSize(new java.awt.Dimension(120, 30));
+        mPixelBodyDiameter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mPixelBodyDiameterActionPerformed(evt);
+            }
+        });
+
+        jHoleSpacingLabel1.setText("Pixed Body Diameter (units):");
+
+        mIsShowPixelBodies.setSelected(true);
+        mIsShowPixelBodies.setText("Show Pixel Bodies");
+        mIsShowPixelBodies.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mIsShowPixelBodiesActionPerformed(evt);
+            }
+        });
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -400,25 +423,30 @@ public class StarConfiguration extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(mHoleDiameterInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(mHoleSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jHoleSpacingLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(mRowSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel1))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(mRows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(mRowSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(mHoleSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mHoleDiameterInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(mStarRatio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(mStarWidthInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jComboUnits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jModelName, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jModelName, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mRows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(mIsDrawBorder)
                     .addComponent(mIsDrawInnerBorders)
                     .addComponent(mIsLabelHoles)
-                    .addComponent(mHoleFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mHoleFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mPixelBodyDiameter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mIsShowPixelBodies))
                 .addGap(136, 136, 136))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,18 +486,21 @@ public class StarConfiguration extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(mHoleDiameterInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jHoleDiameterLabel)
-                    .addComponent(jLabel1)
-                    .addComponent(mHoleFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mIsShowPixelBodies))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(mHoleSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jHoleSpacingLabel))
+                    .addComponent(jHoleSpacingLabel)
+                    .addComponent(mPixelBodyDiameter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jHoleSpacingLabel1))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(mRowSpacingInches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jRowSpacingLabel))
+                            .addComponent(jRowSpacingLabel)
+                            .addComponent(mHoleFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(mRows, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -547,6 +578,14 @@ public class StarConfiguration extends javax.swing.JFrame {
         printStar();
     }//GEN-LAST:event_jPrintMenuItemActionPerformed
 
+    private void mIsShowPixelBodiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mIsShowPixelBodiesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mIsShowPixelBodiesActionPerformed
+
+    private void mPixelBodyDiameterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mPixelBodyDiameterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mPixelBodyDiameterActionPerformed
+
     /**
      * Create a new configuration; basically just empty out the model name so
      * the user can work on the current one but as a new star.
@@ -594,6 +633,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         String starWidthInchesStr = mStarWidthInches.getText();
         String starRatioStr = mStarRatio.getText();
         String holeDiameterInchesStr = mHoleDiameterInches.getText();
+        String pixelBodyDiameterInchesStr = mPixelBodyDiameter.getText();
         String holeSpacingInchesStr = mHoleSpacingInches.getText();
         String rowSpacingInchesStr = mRowSpacingInches.getText();
         String rowsStr = mRows.getText();
@@ -603,6 +643,7 @@ public class StarConfiguration extends javax.swing.JFrame {
         double starWidth;
         double ratio;
         double holeDiameter; 
+        double pixelBodyDiameter;
         double holeSpacing; 
         double rowSpacing;
         int layers;
@@ -629,6 +670,15 @@ public class StarConfiguration extends javax.swing.JFrame {
                     "Hole diameter must be a number.");
             return null;
         }
+        
+        try {
+            pixelBodyDiameter = Double.parseDouble(pixelBodyDiameterInchesStr);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, 
+                    "Body diameter must be a number.");
+            return null;
+        }
+        
         try {
             holeSpacing = Double.parseDouble(holeSpacingInchesStr);
         } catch (NumberFormatException nfe) {
@@ -670,12 +720,14 @@ public class StarConfiguration extends javax.swing.JFrame {
                 starWidth, 
                 ratio, 
                 holeDiameter, 
+                pixelBodyDiameter,
                 holeSpacing, 
                 rowSpacing, 
                 layers, 
                 mIsDrawBorder.isSelected(), 
                 mIsDrawInnerBorders.isSelected(), 
                 mIsLabelHoles.isSelected(), 
+                mIsShowPixelBodies.isSelected(),
                 holeFormat.ordinal());
     }
     
@@ -1115,12 +1167,14 @@ public class StarConfiguration extends javax.swing.JFrame {
                 params.getStarWidth() * pts * unitConversion, 
                 params.getRatio(),
                 params.getHoleDiameter() * pts * unitConversion, 
+                params.getPixelBodyDiameter() * pts * unitConversion,
                 params.getHoleSpacing() * pts * unitConversion,
                 params.getLayers(),
                 params.getRowSpacing() * pts * unitConversion * 2.0,
                 params.isOuterBorderVisible(),
                 params.areInnerBordersVisible(),
                 params.isLabellingHoles(),
+                params.isShowingPixelBodies(),
                 PixelStar.getHoleFormatFromInt(params.getHoleType()),
                 (int) pts);
                 
@@ -1150,12 +1204,17 @@ public class StarConfiguration extends javax.swing.JFrame {
                 StarRepository.doubleToString(params.getRatio()));
         mHoleDiameterInches.setText(
                 StarRepository.doubleToString(params.getHoleDiameter()));
+        mRowSpacingInches.setText(
+                StarRepository.doubleToString(params.getRowSpacing()));
+        mPixelBodyDiameter.setText(
+                StarRepository.doubleToString(params.getPixelBodyDiameter()));
         mHoleSpacingInches.setText(
                 StarRepository.doubleToString(params.getHoleSpacing()));
         mRows.setText(Integer.toString(params.getLayers()));
         mIsDrawBorder.setSelected(params.isOuterBorderVisible());
         mIsDrawInnerBorders.setSelected(params.areInnerBordersVisible());
         mIsLabelHoles.setSelected(params.isLabellingHoles());
+        mIsShowPixelBodies.setSelected(params.isShowingPixelBodies());
         mHoleFormat.setSelectedItem(params.getHoleType());
     }
     
@@ -1208,6 +1267,7 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JMenuItem jExportToXLights;
     private javax.swing.JLabel jHoleDiameterLabel;
     private javax.swing.JLabel jHoleSpacingLabel;
+    private javax.swing.JLabel jHoleSpacingLabel1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1231,7 +1291,9 @@ public class StarConfiguration extends javax.swing.JFrame {
     private javax.swing.JCheckBox mIsDrawBorder;
     private javax.swing.JCheckBox mIsDrawInnerBorders;
     private javax.swing.JCheckBox mIsLabelHoles;
+    private javax.swing.JCheckBox mIsShowPixelBodies;
     private javax.swing.JLabel mNumPixels;
+    private javax.swing.JTextField mPixelBodyDiameter;
     private javax.swing.JTextField mRowSpacingInches;
     private javax.swing.JTextField mRows;
     private javax.swing.JTextField mStarRatio;

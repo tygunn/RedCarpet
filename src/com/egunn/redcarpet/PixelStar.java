@@ -78,6 +78,11 @@ public class PixelStar implements Printable {
     private final double mHoleDiameter;
     
     /**
+     * Diameter of the pixel bodies.
+     */
+    private final double mPixelBodyDiameter;
+    
+    /**
      * The spacing between the holes.
      */
     private final double mHoleSpacing;
@@ -102,6 +107,11 @@ public class PixelStar implements Printable {
      * {@code true} if the holes should be numbered.
      */
     private boolean mIsLabelingHoles = true;
+    
+    /**
+     * {@code true} if pixel bodies should be drawn.
+     */
+    private final boolean mIsShowingPixelBodies;
     
     /**
      * The spacing between the rows/layers.
@@ -160,19 +170,23 @@ public class PixelStar implements Printable {
     
     
     public PixelStar(double width, double ratio, double holeDiameter, 
+            double pixelBodyDiameter,
             double holeSpacing, int rows, double rowSpacing,
             boolean isDrawingBorder, boolean isDrawingStarOutlines,
-            boolean isLabelingHoles, HoleFormat holeFormat, int resolution) {
+            boolean isLabelingHoles, boolean isShowingPixelBodies,
+            HoleFormat holeFormat, int resolution) {
         mStarLayers = new ArrayList<StarLayer>();
         mWidth = width;
         mPentagonRatio = ratio;
         mHoleDiameter = holeDiameter;
+        mPixelBodyDiameter = pixelBodyDiameter;
         mHoleSpacing = holeSpacing;
         mRows = rows;
         mRowSpacing = rowSpacing;
         mIsDrawingBorder = isDrawingBorder;
         mIsDrawingInnerOutlines = isDrawingStarOutlines;
         mIsLabelingHoles = isLabelingHoles;
+        mIsShowingPixelBodies = isShowingPixelBodies;
         mHoleFormat = holeFormat;
         mResolution = resolution;
         
@@ -220,13 +234,14 @@ public class PixelStar implements Printable {
             StarLayer sl;
             if (layer == 0) {
                 sl = new StarLayer(width - ((double)layer * mRowSpacing), 
-                        mPentagonRatio, mHoleSpacing, mHoleDiameter);
+                        mPentagonRatio, mHoleSpacing, mHoleDiameter,
+                mPixelBodyDiameter, mIsShowingPixelBodies);
                 numHoles = sl.getNumHolesPerEdge();
             } else {
                 numHoles--;
                 sl = new StarLayer(width - ((double)layer * mRowSpacing), 
                         mPentagonRatio, mHoleSpacing, mHoleDiameter, numHoles, 
-                        totalPixels);
+                        totalPixels, mPixelBodyDiameter, mIsShowingPixelBodies);
             }
             if (trans == null) {
                 trans = sl.getOffsetTransform();

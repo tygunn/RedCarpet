@@ -18,8 +18,10 @@ package com.egunn.redcarpet;
 
 import com.egunn.redcarpet.PixelStar.HoleFormat;
 import com.sun.javafx.binding.StringFormatter;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
@@ -92,6 +94,16 @@ public class StarLayer {
     private final double mHoleSpacing;
     
     /**
+     * The diameter of the bodies of pixels.
+     */
+    private final double mPixelBodySize;
+    
+    /**
+     * {@code true} if pixel bodies are shown.
+     */
+    private final boolean mIsShowingPixelBodies;
+    
+    /**
      * The actual spacing between each hole taking into account how many holes
      * we ended up placing on each side.
      */
@@ -137,12 +149,14 @@ public class StarLayer {
      * @param holeSizeInches 
      */
     public StarLayer(double widthInches, double ratio, double holeSpacingInches,
-            double holeSizeInches) {
+            double holeSizeInches, double pixelBodySize, 
+            boolean isShowingPixelBodies) {
         mStar = new Star(widthInches, ratio);
         mHoleSpacing = holeSpacingInches;
         mHoleSize = holeSizeInches;
         mNumHolesPerEdge = calculateHolesPerEdge();
-        
+        mPixelBodySize = pixelBodySize;
+        mIsShowingPixelBodies = isShowingPixelBodies;
         placeHoles();
     }
     
@@ -156,12 +170,15 @@ public class StarLayer {
      * @param holeCountStart 
      */
     public StarLayer(double widthInches, double ratio, double holeSpacingInches,
-            double holeSizeInches, int numHoles, int holeCountStart) {
+            double holeSizeInches, int numHoles, int holeCountStart,
+            double pixelBodySize, boolean isShowingPixelBodies) {
         mStar = new Star(widthInches, ratio);
         mHoleSpacing = holeSpacingInches;
         mHoleSize = holeSizeInches;
         mNumHolesPerEdge = numHoles;
         mHoleCountStart = holeCountStart;
+        mPixelBodySize = pixelBodySize;
+        mIsShowingPixelBodies = isShowingPixelBodies;
         placeHoles();
     }
     
@@ -346,6 +363,25 @@ public class StarLayer {
                                     + (e.getHeight() / 2))
                     );
                 }
+            }
+            
+            if (mIsShowingPixelBodies) {
+                // Draw the pixelBody
+                double bodyRadius = mPixelBodySize / 2.0;
+                Stroke startStroke = g.getStroke();
+                
+                Stroke dashed = new BasicStroke(0.0f, 
+                        BasicStroke.CAP_BUTT, 
+                        BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+                g.setStroke(dashed);
+                Ellipse2D pixelBody = new Ellipse2D.Double(
+                    e.getCenterX() - bodyRadius + at.getTranslateX(),
+                    e.getCenterY() - bodyRadius + at.getTranslateY(),
+                    mPixelBodySize,
+                    mPixelBodySize);
+                g.draw(pixelBody);
+                
+                g.setStroke(startStroke);
             }
             
             if (isLabellingHoles) {
