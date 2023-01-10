@@ -31,6 +31,7 @@ public class StarParameters {
     private double mPixelBodyDiameter;
     private double mHoleSpacing;
     private double mRowSpacing;
+    private double mEdgeSpacing;
     private int mLayers;
     private boolean mIsOuterBorderVisible;
     private boolean mAreInnerBordersVisible;
@@ -47,6 +48,7 @@ public class StarParameters {
             double pixelBodyDiameter,
             double holeSpacing, 
             double rowSpacing,
+            double edgeSpacing,
             int layers, 
             boolean isOuterBorderVisible,
             boolean areInnerBordersVisible, 
@@ -61,6 +63,7 @@ public class StarParameters {
         mPixelBodyDiameter = pixelBodyDiameter;
         mHoleSpacing = holeSpacing;
         mRowSpacing = rowSpacing;
+        mEdgeSpacing = edgeSpacing;
         mLayers = layers;
         mIsOuterBorderVisible = isOuterBorderVisible;
         mAreInnerBordersVisible = areInnerBordersVisible;
@@ -260,5 +263,19 @@ public class StarParameters {
      */
     public void setHoleType(int mHoleType) {
         this.mHoleType = mHoleType;
+    }
+
+    /**
+     * @return the mEdgeSpacing
+     */
+    public double getEdgeSpacing() {
+        return mEdgeSpacing;
+    }
+
+    /**
+     * @param mEdgeSpacing the mEdgeSpacing to set
+     */
+    public void setEdgeSpacing(double mEdgeSpacing) {
+        this.mEdgeSpacing = mEdgeSpacing;
     }
 }

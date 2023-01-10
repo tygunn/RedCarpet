@@ -63,6 +63,7 @@ public class StarRepository {
     private final static String PIXEL_BODY_DIAMETER_ATTR = "pixelBodyDiameter";
     private final static String HOLE_SPACING_ATTR = "holeSpacing";
     private final static String ROW_SPACING_ATTR = "rowSpacing";
+    private final static String EDGE_SPACING_ATTR = "edgeSpacing";
     private final static String LAYERS_ATTR = "layers";
     private final static String DRAW_OUTER_BORDER_ATTR = "drawOuterBorder";
     private final static String DRAW_INNER_BORDERS_ATTR = "drawInnerBorders";
@@ -220,6 +221,8 @@ public class StarRepository {
                 doubleToString(starParams.getHoleSpacing()));
         existingStar.setAttribute(ROW_SPACING_ATTR, 
                 doubleToString(starParams.getRowSpacing()));
+        existingStar.setAttribute(EDGE_SPACING_ATTR, 
+                doubleToString(starParams.getEdgeSpacing()));
         existingStar.setAttribute(LAYERS_ATTR, ("" + starParams.getLayers()));
         existingStar.setAttribute(DRAW_OUTER_BORDER_ATTR,
                 Boolean.toString(starParams.isOuterBorderVisible()));
@@ -276,6 +279,11 @@ public class StarRepository {
                 HOLE_SPACING_ATTR));
         double rowSpacing = Double.parseDouble(starElement.getAttribute(
                 ROW_SPACING_ATTR));
+        String edgeAttrStr = starElement.getAttribute(EDGE_SPACING_ATTR);
+        if (edgeAttrStr == null || edgeAttrStr.isEmpty()) {
+            edgeAttrStr = starElement.getAttribute(ROW_SPACING_ATTR);
+        }
+        double edgeSpacing = Double.parseDouble(edgeAttrStr);
         int layers = Integer.parseInt(starElement.getAttribute(LAYERS_ATTR));
         boolean isOuterBorderVisible = Boolean.parseBoolean(
                 starElement.getAttribute(DRAW_OUTER_BORDER_ATTR));
@@ -296,6 +304,7 @@ public class StarRepository {
                 pixelBodyDiameter,
                 holeSpacing, 
                 rowSpacing, 
+                edgeSpacing,
                 layers, 
                 isOuterBorderVisible, 
                 isInnerBorderVisible, 

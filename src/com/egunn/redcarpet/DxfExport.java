@@ -72,6 +72,23 @@ public class DxfExport {
         return sb.toString();
     }
     
+    private String getEntityForPoint(Ellipse2D hole) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("0");
+        sb.append(NEW_LINE);
+        sb.append("POINT");
+        sb.append(NEW_LINE);
+        sb.append("10"); // X
+        sb.append(NEW_LINE);
+        sb.append(doubleToString(hole.getCenterX()));
+        sb.append(NEW_LINE);
+        sb.append("20"); // Y
+        sb.append(NEW_LINE);
+        sb.append(doubleToString(hole.getCenterY()));
+        sb.append(NEW_LINE);
+        return sb.toString();
+    }
+    
     /**
      * Get a line as a DXF element.
      * @param start start point
@@ -154,6 +171,7 @@ public class DxfExport {
         for (StarLayer layer : star.getLayers()){
             for (Ellipse2D hole : layer.getHolesList()) {
                 sb.append(getEntityForHole(hole));
+                //sb.append(getEntityForPoint(hole));
             }
         }
         

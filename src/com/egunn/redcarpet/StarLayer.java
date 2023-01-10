@@ -17,7 +17,7 @@
 package com.egunn.redcarpet;
 
 import com.egunn.redcarpet.PixelStar.HoleFormat;
-import com.sun.javafx.binding.StringFormatter;
+//import com.sun.javafx.binding.StringFormatter;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;

@@ -119,6 +119,11 @@ public class PixelStar implements Printable {
     private final double mRowSpacing;
     
     /**
+     * The spacing between the layers and the edge.
+     */
+    private final double mEdgeSpacing;
+    
+    /**
      * The number of rows in the star.
      */
     private final int mRows;
@@ -171,7 +176,7 @@ public class PixelStar implements Printable {
     
     public PixelStar(double width, double ratio, double holeDiameter, 
             double pixelBodyDiameter,
-            double holeSpacing, int rows, double rowSpacing,
+            double holeSpacing, int rows, double rowSpacing, double edgeSpacing,
             boolean isDrawingBorder, boolean isDrawingStarOutlines,
             boolean isLabelingHoles, boolean isShowingPixelBodies,
             HoleFormat holeFormat, int resolution) {
@@ -183,6 +188,7 @@ public class PixelStar implements Printable {
         mHoleSpacing = holeSpacing;
         mRows = rows;
         mRowSpacing = rowSpacing;
+        mEdgeSpacing = edgeSpacing;
         mIsDrawingBorder = isDrawingBorder;
         mIsDrawingInnerOutlines = isDrawingStarOutlines;
         mIsLabelingHoles = isLabelingHoles;
@@ -225,7 +231,7 @@ public class PixelStar implements Printable {
         if (mIsDrawingBorder) {
             mBorder = new Star(mWidth, mPentagonRatio);
             trans = mBorder.getOffsetTransform();
-            width -= mRowSpacing;
+            width -= mEdgeSpacing;
         }
         
         int numHoles = 0;
